@@ -1,0 +1,25 @@
+{
+  "name": "components-collection",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "vite build && gh-pages -d dist",
+    "convert-images": "node scripts/convert-images.js",
+    "build-sprite": "node scripts/build-sprite.js"
+  },
+  "homepage": "https://KomlevaAlena.github.io/components-collection",
+  "devDependencies": {
+    "gh-pages": "^6.0.0",
+    "sass": "^1.69.0",
+    "sharp": "^0.34.4",
+    "vite": "^4.5.3"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
