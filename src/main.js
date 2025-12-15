@@ -15,3 +15,9 @@ console.log('✅ SVG loader imported');
 
 console.log('🚀 All modules loaded - waiting for components...');
 
+import { todoController } from './scripts/todo/todoController.js';
+console.log('✅ Todo Controller импортирован');
+
+todoController.init();
+
+
