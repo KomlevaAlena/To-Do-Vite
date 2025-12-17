@@ -24,7 +24,7 @@ npm run build
 # Деплой на GitHub Pages
 npm run deploy
 
-https://komlevaalena.github.io/components-collection/
+https://komlevaalena.github.io/To-Do-Vite/
 
 # Убедимся что у нас есть тестовое изображение в src/assets/images/
 ls -la src/assets/images/

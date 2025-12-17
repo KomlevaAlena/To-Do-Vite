@@ -20,4 +20,7 @@ console.log('✅ Todo Controller импортирован');
 
 todoController.init();
 
+// Временная проверка - импортируем компоненты напрямую
+import { components } from './components/components.js';
+console.log('📦 Доступные компоненты:', Object.keys(components));
 

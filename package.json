@@ -11,7 +11,7 @@
     "convert-images": "node scripts/convert-images.js",
     "build-sprite": "node scripts/build-sprite.js"
   },
-  "homepage": "https://KomlevaAlena.github.io/To-Do-Vite",
+  "homepage": "https://komlevaalena.github.io/To-Do-Vite/",
   "devDependencies": {
     "gh-pages": "^6.0.0",
     "sass": "^1.69.0",

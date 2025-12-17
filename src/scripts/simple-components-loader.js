@@ -1,97 +1,93 @@
-// Улучшенный загрузчик компонентов с поддержкой вложенных компонентов
+// Импортируем все компоненты из одного файла
+import { components } from '../components/components.js';
+
+// Упрощённый загрузчик компонентов из JS
 class SimpleComponentLoader {
   constructor() {
+    console.log('🔄 SimpleComponentLoader создан');
     this.loadedComponents = new Set();
   }
   
-  async init() {
-    console.log('🔄 Loading components...');
+  init() {
+    console.log('🚀 Начинаю загрузку компонентов...');
     
-    // Начальная загрузка
-    await this.loadAllComponents();
+    // Загружаем все компоненты сразу
+    this.loadAllComponents();
     
-    // Наблюдаем за изменениями DOM для вложенных компонентов
+    // Наблюдаем за изменениями для динамически добавленных компонентов
     this.setupObserver();
     
-    console.log('✅ All components loaded');
+    console.log('✅ Все компоненты загружены');
   }
   
-  async loadAllComponents() {
-    const components = document.querySelectorAll('[data-component]:not([data-loaded])');
-    console.log(`Found ${components.length} new components to load`);
+  // Загрузить все компоненты на странице
+  loadAllComponents() {
+    // Находим все элементы с data-component
+    const componentElements = document.querySelectorAll('[data-component]:not([data-loaded])');
+    console.log(`📊 Найдено компонентов для загрузки: ${componentElements.length}`);
     
-    for (const component of components) {
-      const name = component.getAttribute('data-component');
-      if (!this.loadedComponents.has(`${name}-${this.getComponentId(component)}`)) {
-        await this.loadComponent(component, name);
-      }
-    }
+    componentElements.forEach(element => {
+      const name = element.getAttribute('data-component');
+      this.loadComponent(element, name);
+    });
   }
   
-  getComponentId(element) {
-    // Создаем уникальный ID на основе позиции в DOM
-    return Array.from(element.parentNode.children).indexOf(element);
-  }
-  
-  async loadComponent(placeholder, name) {
-    try {
-      console.log(`📥 Loading: ${name}`);
-      
-      const url = `/src/components/${name}/${name}.html?t=${Date.now()}`;
-      
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      
-      const html = await response.text();
-      
-      if (!html || html.trim().length === 0) {
-        throw new Error('Empty HTML content');
-      }
-      
-      console.log(`✅ ${name} loaded, length: ${html.length} chars`);
+  // Загрузить один компонент
+  loadComponent(placeholder, name) {
+    console.log(`📥 Загружаю компонент: ${name}`);
+    
+    // Проверяем, есть ли такой компонент
+    if (components[name]) {
+      // Вставляем HTML из components.js
+      placeholder.innerHTML = components[name];
       
       // Помечаем как загруженный
       placeholder.setAttribute('data-loaded', 'true');
-      this.loadedComponents.add(`${name}-${this.getComponentId(placeholder)}`);
+      this.loadedComponents.add(name);
       
-      // Вставляем HTML
-      placeholder.innerHTML = html;
+      console.log(`✅ ${name} загружен`);
       
-      // После вставки проверяем новые компоненты внутри
-      await this.loadAllComponents();
+      // Проверяем, не появились ли внутри новые компоненты
+      this.loadAllComponents();
       
-    } catch (error) {
-      console.error(`❌ Failed to load ${name}:`, error);
+    } else {
+      // Если компонент не найден
+      console.error(`❌ Компонент "${name}" не найден в components.js`);
       placeholder.innerHTML = `
-        <div class="component-error">
-          <strong>Component Error:</strong> ${name}<br>
-          Error: ${error.message}<br>
-          Check: /src/components/${name}/${name}.html
+        <div style="padding: 1rem; background: #fee; border: 2px dashed #e74c3c;">
+          <strong>Ошибка компонента:</strong> ${name}<br>
+          Компонент не найден в components.js
         </div>
       `;
     }
   }
   
+  // Наблюдатель за изменениями DOM (для динамически добавленных компонентов)
   setupObserver() {
-    // MutationObserver для отслеживания новых компонентов
     const observer = new MutationObserver((mutations) => {
-      let shouldReload = false;
+      let hasNewComponents = false;
       
       mutations.forEach(mutation => {
         if (mutation.addedNodes.length) {
           mutation.addedNodes.forEach(node => {
-            if (node.nodeType === 1 && node.hasAttribute?.('data-component')) {
-              shouldReload = true;
+            if (node.nodeType === 1 && node.querySelectorAll) {
+              // Проверяем, есть ли в добавленных узлах компоненты
+              const componentsInNode = node.querySelectorAll('[data-component]');
+              if (componentsInNode.length > 0) {
+                hasNewComponents = true;
+              }
             }
           });
         }
       });
       
-      if (shouldReload) {
+      if (hasNewComponents) {
+        console.log('🔍 Обнаружены новые компоненты, загружаю...');
         this.loadAllComponents();
       }
     });
     
+    // Наблюдаем за всем документом
     observer.observe(document.body, {
       childList: true,
       subtree: true
@@ -101,5 +97,6 @@ class SimpleComponentLoader {
 
 // Запускаем при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
-  new SimpleComponentLoader().init();
+  const loader = new SimpleComponentLoader();
+  loader.init();
 });
