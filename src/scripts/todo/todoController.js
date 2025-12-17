@@ -1,4 +1,5 @@
 import { todoModel } from './todo-model.js';
+import { todoView } from './todo-view.js';
 class TodoController {
     constructor() {
         console.log('✅ Контроллер создан');
@@ -8,6 +9,7 @@ class TodoController {
     this.todoForm = null;
     this.todoInput = null;
     this.addButton = null;
+    console.log('📊 Модель и представление подключены');
     }
 
     init() {
@@ -62,6 +64,8 @@ class TodoController {
             return;
         }
         console.log('✅ Все элементы готовы к работе');
+        // Устанавливаем колбэк для удаления в представлении
+        todoView.setOnDeleteCallback(this.handleDeleteTodo.bind(this));// bind создаёт новую функцию, где this всегда = текущий объект
         // ШАГ 1: Добавляем обработчик события submit на форму
         this.todoForm.addEventListener('submit', (event) => {
             // Это стандартная функция обработчик события
@@ -84,7 +88,11 @@ class TodoController {
 
             if (newTodo) {
                 console.log('✅ Задача добавлена в модель:', newTodo);
-                console.log('📋 Все задачи в модели:', todoModel.getAllTodos());
+                // ПОЛУЧАЕМ ВСЕ ЗАДАЧИ ИЗ МОДЕЛИ
+                const allTodos = todoModel.getAllTodos();
+                console.log('📋 Все задачи в модели:', allTodos);
+                // ПЕРЕДАЕМ ЗАДАЧИ В ПРЕДСТАВЛЕНИЕ ДЛЯ ОТОБРАЖЕНИЯ
+                todoView.renderTodos(allTodos);
             } else {
                 console.log('❌ Не удалось добавить задачу в модель');
             }
@@ -97,6 +105,23 @@ class TodoController {
             console.log('✅ Задача должна быть добавлена:', todoText);
         });
         console.log('✅ Обработчик события submit добавлен');
+    }
+    // Метод для обработки удаления задачи
+    handleDeleteTodo(todoId) {
+        console.log('🎯 Обрабатываю удаление задачи с id:', todoId);
+        // Удаляем задачу из модели
+        const isDeleted = todoModel.removeTodo(todoId);
+
+        if (isDeleted) {
+            console.log('✅ Задача удалена из модели');
+            // Получаем обновленный список задач
+            const allTodos = todoModel.getAllTodos();
+            console.log('📋 Обновленный список задач:', allTodos);
+            // Перерисовываем список
+            todoView.renderTodos(allTodos);
+        } else {
+            console.error('❌ Не удалось удалить задачу из модели');
+        }
     }
 }
 
