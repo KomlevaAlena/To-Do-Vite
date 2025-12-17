@@ -7,11 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "vite build && gh-pages -d dist",
+    "deploy": "vite build && gh-pages -d docs",
     "convert-images": "node scripts/convert-images.js",
     "build-sprite": "node scripts/build-sprite.js"
   },
-  "homepage": "https://KomlevaAlena.github.io/components-collection",
+  "homepage": "https://KomlevaAlena.github.io/To-Do-Vite",
   "devDependencies": {
     "gh-pages": "^6.0.0",
     "sass": "^1.69.0",
