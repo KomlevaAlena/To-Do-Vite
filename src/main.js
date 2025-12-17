@@ -15,22 +15,9 @@ console.log('✅ SVG loader imported');
 
 console.log('🚀 All modules loaded - waiting for components...');
 
-// Временный код для проверки
-// document.addEventListener('DOMContentLoaded', () => {
-//     console.log('🚀 DOM loaded - Todo App is ready!');
-    
-//     // Проверим, что #app существует
-//     const app = document.getElementById('app');
-//     if (app) {
-//         app.innerHTML = `
-//             <div class="todo-app">
-//                 <h1>Todo List</h1>
-//                 <p>✅ Сборка работает! Теперь можно начать разработку.</p>
-//                 <div data-component="todo-app"></div>
-//             </div>
-//         `;
-//         console.log('✅ App container found and initialized');
-//     } else {
-//         console.error('❌ App container (#app) not found');
-//     }
-// });
+import { todoController } from './scripts/todo/todoController.js';
+console.log('✅ Todo Controller импортирован');
+
+todoController.init();
+
+

@@ -2,3 +2,10 @@
 
 // Базовые стили
 @import 'base/reset';
+
+// Компоненты
+@import 'components/todo-app';
+@import 'components/todo-input';
+@import 'components/todo-list';
+@import 'components/todo-item';
+
