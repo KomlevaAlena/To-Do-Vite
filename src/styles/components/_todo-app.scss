@@ -5,6 +5,11 @@
   background: #f8f9fa;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+  @media (max-width: 640px) {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
 }
 
 .todo-app__title {
