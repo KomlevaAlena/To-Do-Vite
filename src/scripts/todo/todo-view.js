@@ -7,11 +7,18 @@ class TodoView {
     this.todoListContainer = null;
     // Колбэк для удаления
     this.onDeleteCallback = null;
+    this.onToggleCallback = null; // ← новое поле для чекбоксов
   }
   // Установить колбэк для удаления
   setOnDeleteCallback(callback) {
     this.onDeleteCallback = callback;
     console.log('✅ Колбэк для удаления установлен');
+  }
+
+  // Метод для установки колбэка
+  setOnToggleCallback(callback) {
+    this.onToggleCallback = callback;
+    console.log('✅ Колбэк для переключения статуса установлен');
   }
 
   // Найти контейнер для списка (вызываем когда точно нужен)
@@ -35,14 +42,25 @@ class TodoView {
     const todoItem = document.createElement('div');
     todoItem.className = 'todo-item';
     todoItem.dataset.id = todo.id; // Сохраняем id в data-атрибут
+
+    // Определяем класс для выполненной задачи
+    const completedClass = todo.completed ? 'todo-item--completed' : '';
     
     // Заполняем HTML
     todoItem.innerHTML = `
-      <div class="todo-item__content">
-        <span class="todo-item__text">${this.escapeHtml(todo.text)}</span>
-      </div>
-      <button class="todo-item__delete" data-action="delete">🗑️</button>
-    `;
+    <div class="todo-item__checkbox">
+      <input 
+        type="checkbox" 
+        class="todo-item__checkbox-input" 
+        ${todo.completed ? 'checked' : ''}
+        data-action="toggle"
+      >
+    </div>
+    <div class="todo-item__content ${completedClass}">
+      <span class="todo-item__text">${this.escapeHtml(todo.text)}</span>
+    </div>
+    <button class="todo-item__delete" data-action="delete">🗑️</button>
+  `;
     
     return todoItem;
   }
@@ -86,8 +104,8 @@ class TodoView {
     });
     
     console.log('✅ Задачи отрисованы');
-    // ШАГ: Добавляем обработчики на кнопки удаления
-    this.addDeleteHandlers();
+    // Добавляем обработчики событий на ВСЕ элементы
+    this.addEventHandlers();
   }
   // Добавить обработчики удаления
   addDeleteHandlers() {
@@ -116,6 +134,58 @@ class TodoView {
             
             console.log('✅ Задача удалена со страницы (временно)');
         });
+    });
+  }
+
+  // Обновить счётчики задач
+  updateCounters(counters) {
+    console.log('📊 Обновляю счётчики:', counters);
+    // Находим все элементы счётчиков
+    const totalElement = document.querySelector('[data-counter="total"] .todo-counter__value');
+    const completedElement = document.querySelector('[data-counter="completed"] .todo-counter__value');
+    const activeElement = document.querySelector('[data-counter="active"] .todo-counter__value');
+
+    // Проверяем, что элементы найдены
+    if (totalElement && completedElement && activeElement) {
+      // Устанавливаем новые значения
+      totalElement.textContent = counters.total;
+      completedElement.textContent = counters.completed;
+      activeElement.textContent = counters.active;
+
+      console.log('✅ Счётчики обновлены');
+    } else {
+      console.warn('⚠️ Элементы счётчиков не найдены');
+    }
+  }
+  
+  // Добавить обработчики на все интерактивные элементы
+  addEventHandlers() {
+    this.addDeleteHandlers();
+    this.addToggleHandlers();// ← добавляем обработчики чекбоксов
+  }
+  // Добавить обработчики на чекбоксы
+  addToggleHandlers() {
+    // Находим все чекбоксы
+    const checkboxes = document.querySelectorAll('.todo-item__checkbox-input');
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', (event) => {
+        // Предотвращаем всплытие
+        event.stopPropagation();
+
+        // Находим родительскую задачу
+        const todoItem = checkbox.closest('.todo-item');
+        const todoId = parseInt(todoItem.dataset.id);
+
+        console.log('☑️ Изменён чекбокс у задачи с id:', todoId);
+        console.log('📊 Новое значение:', checkbox.checked);
+
+        // Если есть колбэк - вызываем его
+        if (this.onToggleCallback) {
+          this.onToggleCallback(todoId);
+        } else {
+          console.warn('⚠️ Нет колбэка для переключения статуса');
+        }
+      });
     });
   }
 }
