@@ -66,6 +66,7 @@ class TodoController {
         console.log('✅ Все элементы готовы к работе');
         // Устанавливаем колбэк для удаления в представлении
         todoView.setOnDeleteCallback(this.handleDeleteTodo.bind(this));// bind создаёт новую функцию, где this всегда = текущий объект
+        todoView.setOnToggleCallback(this.handleToggleTodo.bind(this));// В методе setupEventListeners() добавляем установку колбэка:
         // ШАГ 1: Добавляем обработчик события submit на форму
         this.todoForm.addEventListener('submit', (event) => {
             // Это стандартная функция обработчик события
@@ -92,7 +93,7 @@ class TodoController {
                 const allTodos = todoModel.getAllTodos();
                 console.log('📋 Все задачи в модели:', allTodos);
                 // ПЕРЕДАЕМ ЗАДАЧИ В ПРЕДСТАВЛЕНИЕ ДЛЯ ОТОБРАЖЕНИЯ
-                todoView.renderTodos(allTodos);
+                this.updateUI(); // ← ВЫЗЫВАЕМ updateUI() ВМЕСТО renderTodos()
             } else {
                 console.log('❌ Не удалось добавить задачу в модель');
             }
@@ -118,11 +119,44 @@ class TodoController {
             const allTodos = todoModel.getAllTodos();
             console.log('📋 Обновленный список задач:', allTodos);
             // Перерисовываем список
-            todoView.renderTodos(allTodos);
+            this.updateUI(); // ← ВЫЗЫВАЕМ updateUI()
         } else {
             console.error('❌ Не удалось удалить задачу из модели');
         }
     }
+
+    updateUI() {
+        console.log('🔄 Обновляю весь интерфейс...');
+        // 1. Получаем все задачи из модели
+        const allTodos = todoModel.getAllTodos();
+        console.log('📋 Задачи для отрисовки:', allTodos);
+        // 2. Получаем данные счётчиков
+        const counters = todoModel.getCounters();
+        console.log('📊 Данные счётчиков:', counters);
+        // 3. Отрисовываем задачи
+        todoView.renderTodos(allTodos);
+        // 4. Обновляем счётчики
+        todoView.updateCounters(counters);
+        console.log('✅ Интерфейс обновлён');
+    }
+
+    handleToggleTodo(todoId) {
+        console.log('🎯 Обрабатываю переключение статуса задачи с id:', todoId);
+        // Переключаем статус в модели
+        const isToggled = todoModel.toggleTodo(todoId);
+
+        if (isToggled) {
+            console.log('✅ Статус задачи переключен');
+            // Получаем обновленный список задач
+            const allTodos = todoModel.getAllTodos();
+            console.log('📋 Все задачи в модели:', allTodos);
+            // Перерисовываем список
+            this.updateUI(); // ← ВЫЗЫВАЕМ updateUI()
+        } else {
+            console.error('❌ Не удалось переключить статус задачи');
+        }
+    }
+
 }
 
 const todoController = new TodoController(); // Создаём экземпляр (объект) нашего контроллера

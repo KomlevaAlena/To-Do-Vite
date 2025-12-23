@@ -1,12 +1,29 @@
 // Здесь храним HTML всех компонентов
 export const components = {
   'todo-app': `
-    <div class="todo-app">
-      <h1 class="todo-app__title">To-Do List</h1>
-      <div data-component="todo-input"></div>
-      <div data-component="todo-list"></div>
+  <div class="todo-app">
+    <h1 class="todo-app__title">To-Do List</h1>
+    
+    <!-- Счётчики задач -->
+    <div class="todo-counters">
+      <div class="todo-counter" data-counter="total">
+        Всего: <span class="todo-counter__value">0</span>
+      </div>
+      <div class="todo-counter" data-counter="completed">
+        Выполнено: <span class="todo-counter__value">0</span>
+      </div>
+      <div class="todo-counter" data-counter="active">
+        Активных: <span class="todo-counter__value">0</span>
+      </div>
     </div>
-  `,
+    
+    <!-- Форма добавления -->
+    <div data-component="todo-input"></div>
+    
+    <!-- Список задач -->
+    <div data-component="todo-list"></div>
+  </div>
+`,
   
   'todo-input': `
     <div class="todo-input">
