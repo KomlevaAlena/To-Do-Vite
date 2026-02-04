@@ -9,6 +9,7 @@ class TodoModel {
   addTodo(text) { // Проверяем, что текст не пустой
     if (!text || text.trim() === '') {
       return null; // Пустые задачи не добавляем
+      
     }
 
     const todo = { // Создаем объект задачи
@@ -18,6 +19,7 @@ class TodoModel {
     };
 
     this.todos.push(todo);// Добавляем задачу в массив
+    this.saveToLocalStorage(); // ← ДОБАВЛЯЕМ СОХРАНЕНИЕ
     return todo;// Возвращаем созданную задачу
   }
 
@@ -26,6 +28,7 @@ class TodoModel {
     const index = this.todos.findIndex(todo => todo.id === id); // Находим индекс задачи в массиве findIndex проходит по всем задачам и ищет ту, у которой id совпада
     if (index !== -1) { // Если задача найдена (индекс не -1)
       this.todos.splice(index, 1); // Удаляем задачу из массива splice удаляет элемент по индексу
+      this.saveToLocalStorage(); // ← ДОБАВЛЯЕМ СОХРАНЕНИЕ
       return true; // Успешно удалил
     }
     return false; // Задача не найдена
@@ -73,6 +76,7 @@ class TodoModel {
       // Меняем статус на противоположный
     // Если было true → станет false, если было false → станет true
     todo.completed = !todo.completed;
+    this.saveToLocalStorage(); // ← ДОБАВЛЯЕМ СОХРАНЕНИЕ
     console.log('✅ Статус изменён:', todo.completed);
     return true;
     }
