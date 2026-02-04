@@ -79,6 +79,37 @@ class TodoModel {
     console.log('❌ Задача не найдена');
     return false;
   }
+
+  saveToLocalStorage() {
+    try {
+      // JSON.stringify преобразует объект в строку JSON
+      const data = JSON.stringify(this.todos);
+      localStorage.setItem('todoApp_todos', data);
+      console.log('💾 Задачи сохранены в localStorage');
+    } catch (error) {
+      console.error('❌ Ошибка сохранения в localStorage:', error);
+    }
+  }
+  // Загрузить задачи из localStorage
+  loadFromLocalStorage() {
+    try {
+      const data = localStorage.getItem('todoApp_todos');
+      if (data) {
+        // JSON.parse преобразует строку JSON обратно в объект
+        this.todos = JSON.parse(data);
+
+        // Восстанавливаем nextId (максимальный id + 1)
+        if (this.todos.length > 0) {
+        this.nextId = Math.max(...this.todos.map(todo => todo.id)) + 1;
+        }
+        console.log('📂 Задачи загружены из localStorage:', this.todos);
+        return true;
+      }
+    } catch (error) {
+      console.error('❌ Ошибка загрузки из localStorage:', error);
+    }
+    return false;
+  }
 }
 
 // Экспортируем экземпляр модели (синглтон) Создаем один экземпляр (объект) модели "синглтон" - только один экземпляр на всё приложение
