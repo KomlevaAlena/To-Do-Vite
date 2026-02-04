@@ -16,6 +16,18 @@ class TodoController {
         // Метод для инициализации (запуска) контроллера
         console.log('✅ Контроллер запускается');
         // Здесь будем настраивать всё приложение
+        // Загружаем задачи из localStorage (если есть)
+        console.log('📂 Пытаюсь загрузить задачи из localStorage...');
+        const hasLoaded = todoModel.loadFromLocalStorage();
+        // Сохраняем флаг что есть загруженные задачи
+        this.hasLoadedTasks = hasLoaded;
+
+        if (hasLoaded) {
+            console.log('✅ Задачи загружены из localStorage');// Показываем загруженные задачи
+            // this.updateUI();НЕ вызываем updateUI() сразу - ждём загрузки компонентов
+        } else {
+            console.log('📝 localStorage пуст, начинаем с чистого листа');
+        }
         // Пробуем найти элементы сразу
         this.findElements();
         // Если не нашли - ждём и пробуем снова через 100мс
@@ -67,6 +79,11 @@ class TodoController {
         // Устанавливаем колбэк для удаления в представлении
         todoView.setOnDeleteCallback(this.handleDeleteTodo.bind(this));// bind создаёт новую функцию, где this всегда = текущий объект
         todoView.setOnToggleCallback(this.handleToggleTodo.bind(this));// В методе setupEventListeners() добавляем установку колбэка:
+        // ЕСЛИ БЫЛИ ЗАГРУЖЕНЫ ЗАДАЧИ - отрисовываем их сейчас
+        if (this.hasLoadedTasks) {
+            console.log('🎨 Отрисовываю загруженные из localStorage задачи...');
+            this.updateUI();
+        }
         // ШАГ 1: Добавляем обработчик события submit на форму
         this.todoForm.addEventListener('submit', (event) => {
             // Это стандартная функция обработчик события
