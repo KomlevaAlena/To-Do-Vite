@@ -79,6 +79,7 @@ class TodoController {
         // Устанавливаем колбэк для удаления в представлении
         todoView.setOnDeleteCallback(this.handleDeleteTodo.bind(this));// bind создаёт новую функцию, где this всегда = текущий объект
         todoView.setOnToggleCallback(this.handleToggleTodo.bind(this));// В методе setupEventListeners() добавляем установку колбэка:
+        todoView.setOnFilterCallback(this.handleFilterChange.bind(this)); // ← новое! добавляем установку колбэка
         // ЕСЛИ БЫЛИ ЗАГРУЖЕНЫ ЗАДАЧИ - отрисовываем их сейчас
         if (this.hasLoadedTasks) {
             console.log('🎨 Отрисовываю загруженные из localStorage задачи...');
@@ -144,16 +145,25 @@ class TodoController {
 
     updateUI() {
         console.log('🔄 Обновляю весь интерфейс...');
-        // 1. Получаем все задачи из модели
-        const allTodos = todoModel.getAllTodos();
-        console.log('📋 Задачи для отрисовки:', allTodos);
-        // 2. Получаем данные счётчиков
+        
+        // 1. Получаем ОТФИЛЬТРОВАННЫЕ задачи
+        const filteredTodos = todoModel.getFilteredTodos();
+        console.log('📋 Отфильтрованные задачи для отрисовки:', filteredTodos);
+        
+        // 2. Получаем данные счётчиков (ВСЕХ задач, а не отфильтрованных)
         const counters = todoModel.getCounters();
-        console.log('📊 Данные счётчиков:', counters);
-        // 3. Отрисовываем задачи
-        todoView.renderTodos(allTodos);
-        // 4. Обновляем счётчики
+        console.log('📊 Данные счётчиков (все задачи):', counters);
+        
+        // 3. Отрисовываем ОТФИЛЬТРОВАННЫЕ задачи
+        todoView.renderTodos(filteredTodos);
+        
+        // 4. Обновляем счётчики (показываем ВСЕ задачи)
         todoView.updateCounters(counters);
+        
+        // 5. Обновляем активную кнопку фильтра
+        const currentFilter = todoModel.getCurrentFilter();
+        todoView.updateActiveFilter(currentFilter);
+        
         console.log('✅ Интерфейс обновлён');
     }
 
@@ -173,6 +183,28 @@ class TodoController {
             console.error('❌ Не удалось переключить статус задачи');
         }
     }
+
+    // Метод для обработки изменения фильтра
+    handleFilterChange(filter) {
+        console.log('🎯 Обрабатываю изменение фильтра на:', filter);
+        
+        // Устанавливаем фильтр в модели
+        const isFilterSet = todoModel.setFilter(filter);
+        
+        if (isFilterSet) {
+            console.log('✅ Фильтр установлен в модели');
+            
+            // Обновляем активную кнопку в представлении
+            todoView.updateActiveFilter(filter);
+            
+            // Обновляем отображение задач
+            this.updateUI();
+        } else {
+            console.error('❌ Не удалось установить фильтр');
+        }
+    }
+
+
 
 }
 
