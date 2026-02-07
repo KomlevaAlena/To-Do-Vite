@@ -104,7 +104,7 @@ class TodoModel {
       localStorage.setItem('todoApp_todos', data);
       // Сохраняем фильтр
       localStorage.setItem('todoApp_filter', this.currentFilter);
-      console.log('💾 Задачи сохранены в localStorage');
+      console.log('💾 Сохранены задачи и фильтр:', this.currentFilter);
     } catch (error) {
       console.error('❌ Ошибка сохранения в localStorage:', error);
     }
@@ -121,7 +121,12 @@ class TodoModel {
         if (this.todos.length > 0) {
         this.nextId = Math.max(...this.todos.map(todo => todo.id)) + 1;
         }
-        console.log('📂 Задачи загружены из localStorage:', this.todos);
+        // Загружаем фильтр (если есть)
+        const filterData = localStorage.getItem('todoApp_filter');
+        if (filterData) {
+          this.currentFilter = filterData;
+        }
+        console.log('📂 Загружены задачи и фильтр:', this.currentFilter);
         return true;
       }
     } catch (error) {
