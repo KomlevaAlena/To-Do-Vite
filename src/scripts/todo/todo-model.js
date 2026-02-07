@@ -3,6 +3,7 @@ class TodoModel {
   constructor() {// Конструктор класса - выполняется при создании нового объекта
     this.todos = []; // Массив задач Создаем пустой массив для хранения задач
     this.nextId = 1; // Счётчик для ID Уникальный идентификатор для каждой новой задачи Каждая задача получит id: 1, 2, 3, ...
+    this.currentFilter = 'all';// 'all', 'active', 'completed'
   }
 
   // Добавить задачу
@@ -89,6 +90,8 @@ class TodoModel {
       // JSON.stringify преобразует объект в строку JSON
       const data = JSON.stringify(this.todos);
       localStorage.setItem('todoApp_todos', data);
+      // Сохраняем фильтр
+      localStorage.setItem('todoApp_filter', this.currentFilter);
       console.log('💾 Задачи сохранены в localStorage');
     } catch (error) {
       console.error('❌ Ошибка сохранения в localStorage:', error);
@@ -97,7 +100,7 @@ class TodoModel {
   // Загрузить задачи из localStorage
   loadFromLocalStorage() {
     try {
-      const data = localStorage.getItem('todoApp_todos');
+      const data = localStorage.getItem('todoApp_todos');constructor
       if (data) {
         // JSON.parse преобразует строку JSON обратно в объект
         this.todos = JSON.parse(data);
@@ -113,6 +116,33 @@ class TodoModel {
       console.error('❌ Ошибка загрузки из localStorage:', error);
     }
     return false;
+  }
+
+  // Получить отфильтрованные задачи
+  getFilteredTodos() {
+    switch (this.currentFilter) {
+      case 'active':
+        return this.todos.filter(todo => !todo.completed);
+      case 'complited':
+        return this.todos.filter(todo => todo.completed);
+      case 'all':
+        default:
+        return [...this.todos];// возвращаем копию
+    }
+  }
+
+  setFilter(filter) {
+    if (['all', 'active', 'complited'].includes(filter)) {
+      this.currentFilter = filter;
+      this.saveToLocalStorage(); // сохраняем выбранный фильтр
+      return true;
+    }
+    return false;
+  }
+
+    // Получить текущий фильтр
+  getCurrentFilter() {
+    return this.currentFilter;
   }
 }
 

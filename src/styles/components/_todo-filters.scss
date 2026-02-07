@@ -1,0 +1,14 @@
+.todo-filter {
+  padding: 12px 24px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
+.todo-filter:hover {
+  background: #2980b9;
+}

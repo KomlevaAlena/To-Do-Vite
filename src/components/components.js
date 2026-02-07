@@ -16,6 +16,19 @@ export const components = {
         Активных: <span class="todo-counter__value">0</span>
       </div>
     </div>
+
+    <!-- Фильтры -->
+    <div class="todo-filters">
+      <button class="todo-filter todo-filter--active" data-filter="all">
+        📋 Все
+      </button>
+      <button class="todo-filter" data-filter="active">
+        ⏳ Активные
+      </button>
+      <button class="todo-filter" data-filter="completed">
+        ✅ Выполненные
+      </button>
+    </div>
     
     <!-- Форма добавления -->
     <div data-component="todo-input"></div>
