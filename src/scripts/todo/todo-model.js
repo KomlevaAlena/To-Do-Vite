@@ -3,7 +3,7 @@ class TodoModel {
   constructor() {// Конструктор класса - выполняется при создании нового объекта
     this.todos = []; // Массив задач Создаем пустой массив для хранения задач
     this.nextId = 1; // Счётчик для ID Уникальный идентификатор для каждой новой задачи Каждая задача получит id: 1, 2, 3, ...
-    this.currentFilter = 'all'; // 'all', 'active', 'completed'
+    this.currentFilter = 'all'; // 'all', 'active', 'completed' ← добавляем состояние фильтра
   }
 
   // Добавить задачу
@@ -100,37 +100,37 @@ class TodoModel {
   saveToLocalStorage() {
     try {
       // JSON.stringify преобразует объект в строку JSON
-      const data = JSON.stringify(this.todos);
-      localStorage.setItem('todoApp_todos', data);
+      localStorage.setItem('todoApp_todos', JSON.stringify(this.todos));
       // Сохраняем фильтр
       localStorage.setItem('todoApp_filter', this.currentFilter);
       console.log('💾 Сохранены задачи и фильтр:', this.currentFilter);
     } catch (error) {
-      console.error('❌ Ошибка сохранения в localStorage:', error);
+      console.error('❌ Ошибка сохранения:', error);
     }
   }
   // Загрузить задачи из localStorage
   loadFromLocalStorage() {
     try {
-      const data = localStorage.getItem('todoApp_todos');constructor
-      if (data) {
-        // JSON.parse преобразует строку JSON обратно в объект
-        this.todos = JSON.parse(data);
-
-        // Восстанавливаем nextId (максимальный id + 1)
+      // Загружаем задачи
+      const todosData = localStorage.getItem('todoApp_todos');
+      if (todosData) {
+        this.todos = JSON.parse(todosData);
+        
         if (this.todos.length > 0) {
-        this.nextId = Math.max(...this.todos.map(todo => todo.id)) + 1;
+          this.nextId = Math.max(...this.todos.map(todo => todo.id)) + 1;
         }
-        // Загружаем фильтр (если есть)
-        const filterData = localStorage.getItem('todoApp_filter');
-        if (filterData) {
-          this.currentFilter = filterData;
-        }
-        console.log('📂 Загружены задачи и фильтр:', this.currentFilter);
-        return true;
       }
+      
+      // Загружаем фильтр (если есть)
+      const filterData = localStorage.getItem('todoApp_filter');
+      if (filterData && ['all', 'active', 'completed'].includes(filterData)) {
+        this.currentFilter = filterData;
+      }
+      
+      console.log('📂 Загружены задачи и фильтр:', this.currentFilter);
+      return true;
     } catch (error) {
-      console.error('❌ Ошибка загрузки из localStorage:', error);
+      console.error('❌ Ошибка загрузки:', error);
     }
     return false;
   }
@@ -149,11 +149,15 @@ class TodoModel {
   }
 
   setFilter(filter) {
-    if (['all', 'active', 'completed'].includes(filter)) {
+    // Проверяем что фильтр валидный
+    const validFilters = ['all', 'active', 'completed'];
+    if (validFilters.includes(filter)) {
       this.currentFilter = filter;
-      this.saveToLocalStorage(); // сохраняем выбранный фильтр
+      this.saveToLocalStorage(); // сохраняем выбор фильтра
+      console.log('🎯 Фильтр установлен:', filter);
       return true;
     }
+    console.warn('⚠️ Неизвестный фильтр:', filter);
     return false;
   }
 
