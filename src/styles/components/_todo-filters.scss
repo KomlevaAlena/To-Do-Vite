@@ -1,14 +1,49 @@
-.todo-filter {
-  padding: 12px 24px;
-  background: #3498db;
-  color: white;
-  border: none;
+.todo-filters {
+  display: flex;
+  gap: 12px; // ← расстояние между кнопками
+  margin-bottom: 1.5rem;
+  padding: 12px;
+  background: #f8f9fa;
   border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s;
+  justify-content: center;
 }
 
-.todo-filter:hover {
-  background: #2980b9;
+.todo-filter {
+  padding: 10px 20px;
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #546e7a;
+  transition: all 0.3s;
+  
+  &:hover {
+    border-color: #3498db;
+    color: #3498db;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+  }
+  
+  // Стиль для активной кнопки
+  &--active {
+    background: #3498db;
+    border-color: #3498db;
+    color: white;
+    font-weight: 600;
+    
+    &:hover {
+      background: #2980b9;
+      border-color: #2980b9;
+      transform: translateY(0);
+      box-shadow: none;
+    }
+  }
+  
+  // Эмодзи немного больше
+  &::before {
+    font-size: 16px;
+    margin-right: 6px;
+  }
 }
