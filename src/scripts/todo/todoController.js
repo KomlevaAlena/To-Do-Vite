@@ -9,28 +9,34 @@ class TodoController {
     this.todoForm = null;
     this.todoInput = null;
     this.addButton = null;
+
+    // Временно для отладки
+    window.todoController = this;
+    window.todoModel = todoModel;
+    window.todoView = todoView;
+
     console.log('📊 Модель и представление подключены');
     }
 
     init() {
-        // Метод для инициализации (запуска) контроллера
         console.log('✅ Контроллер запускается');
-        // Здесь будем настраивать всё приложение
-        // Загружаем задачи из localStorage (если есть)
+        
+        // Загружаем задачи из localStorage
         console.log('📂 Пытаюсь загрузить задачи из localStorage...');
         const hasLoaded = todoModel.loadFromLocalStorage();
-        // Сохраняем флаг что есть загруженные задачи
+        
         this.hasLoadedTasks = hasLoaded;
-
+        
         if (hasLoaded) {
-            console.log('✅ Задачи загружены из localStorage');// Показываем загруженные задачи
-            // this.updateUI();НЕ вызываем updateUI() сразу - ждём загрузки компонентов
+            console.log('✅ Задачи загружены из localStorage');
+            // НЕ вызываем updateUI() здесь - вызовем в setupEventListeners()
         } else {
             console.log('📝 localStorage пуст, начинаем с чистого листа');
         }
-        // Пробуем найти элементы сразу
+        
+        // Ищем элементы
         this.findElements();
-        // Если не нашли - ждём и пробуем снова через 100мс
+        
         if (!this.todoForm) {
             console.log('⏳ Подождите, ищем элементы...');
             this.waitForComponents();
@@ -186,6 +192,7 @@ class TodoController {
 
     // Метод для обработки изменения фильтра
     handleFilterChange(filter) {
+        console.log('🎯🎯🎯 ВЫЗВАН handleFilterChange с фильтром:', filter);
         console.log('🎯 Обрабатываю изменение фильтра на:', filter);
         
         // Устанавливаем фильтр в модели

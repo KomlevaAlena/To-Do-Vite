@@ -69,15 +69,38 @@ class TodoModel {
   }
   // Получить отфильтрованные задачи
   getFilteredTodos() {
+    console.log('🎯 getFilteredTodos вызван');
+    console.log('🎯 Текущий фильтр:', this.currentFilter);
+    console.log('🎯 Всего задач:', this.todos.length);
+    console.log('=== getFilteredTodos DEBUG ===');
+    console.log('1. currentFilter:', this.currentFilter);
+    console.log('2. все задачи:', this.todos);
+    console.log('3. выполненные задачи:', this.todos.filter(t => t.completed));
+    console.log('4. активные задачи:', this.todos.filter(t => !t.completed));
+    let result;
+
     switch (this.currentFilter) {
       case 'active':
-        return this.todos.filter(todo => !todo.completed);
+      console.log('🔵 Фильтр ACTIVE');
+      result = this.todos.filter(todo => !todo.completed);
+      break;
       case 'completed':
-        return this.todos.filter(todo => todo.completed);
+        console.log('🟢 Фильтр COMPLETED');
+        console.log('🟢 Выполненные задачи (должны быть в результате):', 
+                    this.todos.filter(todo => todo.completed));
+        result = this.todos.filter(todo => todo.completed);
+        break;
       case 'all':
       default:
-        return [...this.todos]; // возвращаем копию
+        console.log('🟡 Фильтр ALL');
+        result = [...this.todos];
+        break;
     }
+
+    console.log('5. Результат фильтрации:', result);
+    console.log('6. Количество в результате:', result.length);
+    console.log('=============================');
+    return result;
   }
   // Переключить статус выполнения задачи
   toggleTodo(id) {
@@ -136,27 +159,36 @@ class TodoModel {
   }
 
   // Получить отфильтрованные задачи
-  getFilteredTodos() {
-    switch (this.currentFilter) {
-      case 'active':
-        return this.todos.filter(todo => !todo.completed);
-      case 'complited':
-        return this.todos.filter(todo => todo.completed);
-      case 'all':
-        default:
-        return [...this.todos];// возвращаем копию
-    }
-  }
+  // getFilteredTodos() {
+  //   switch (this.currentFilter) {
+  //     case 'active':
+  //       return this.todos.filter(todo => !todo.completed);
+  //     case 'complited':
+  //       return this.todos.filter(todo => todo.completed);
+  //     case 'all':
+  //       default:
+  //       return [...this.todos];// возвращаем копию
+  //   }
+  // }
 
   setFilter(filter) {
+    console.log('🔥 setFilter вызван с:', filter);
+    console.log('🔥 Текущий фильтр до:', this.currentFilter);
+
     // Проверяем что фильтр валидный
     const validFilters = ['all', 'active', 'completed'];
     if (validFilters.includes(filter)) {
       this.currentFilter = filter;
       this.saveToLocalStorage(); // сохраняем выбор фильтра
       console.log('🎯 Фильтр установлен:', filter);
+
+      console.log('🔥 Новый текущий фильтр:', this.currentFilter);
+      console.log('🔥 Все задачи:', this.todos);
+      console.log('🔥 Выполненные задачи:', this.todos.filter(t => t.completed));
+
       return true;
     }
+    console.log('🔥 Ошибка: неверный фильтр');
     console.warn('⚠️ Неизвестный фильтр:', filter);
     return false;
   }
@@ -167,5 +199,14 @@ class TodoModel {
   }
 }
 
+// if (typeof window !== 'undefined') {
+//   window.todoModel = todoModel;
+//   console.log('🔧 todoModel добавлена в window для отладки');
+// }
 // Экспортируем экземпляр модели (синглтон) Создаем один экземпляр (объект) модели "синглтон" - только один экземпляр на всё приложение
 export const todoModel = new TodoModel();
+// Временная отладка - ПОСЛЕ export!
+if (typeof window !== 'undefined') {
+  window.todoModel = todoModel;
+  console.log('🔧 todoModel добавлена в window для отладки');
+}
