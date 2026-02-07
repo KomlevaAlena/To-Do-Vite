@@ -3,7 +3,7 @@ class TodoModel {
   constructor() {// Конструктор класса - выполняется при создании нового объекта
     this.todos = []; // Массив задач Создаем пустой массив для хранения задач
     this.nextId = 1; // Счётчик для ID Уникальный идентификатор для каждой новой задачи Каждая задача получит id: 1, 2, 3, ...
-    this.currentFilter = 'all';// 'all', 'active', 'completed'
+    this.currentFilter = 'all'; // 'all', 'active', 'completed'
   }
 
   // Добавить задачу
@@ -66,6 +66,18 @@ class TodoModel {
       completed: this.getCompletedCount(),
       active: this.getActiveCount()
     };
+  }
+  // Получить отфильтрованные задачи
+  getFilteredTodos() {
+    switch (this.currentFilter) {
+      case 'active':
+        return this.todos.filter(todo => !todo.completed);
+      case 'completed':
+        return this.todos.filter(todo => todo.completed);
+      case 'all':
+      default:
+        return [...this.todos]; // возвращаем копию
+    }
   }
   // Переключить статус выполнения задачи
   toggleTodo(id) {
@@ -132,7 +144,7 @@ class TodoModel {
   }
 
   setFilter(filter) {
-    if (['all', 'active', 'complited'].includes(filter)) {
+    if (['all', 'active', 'completed'].includes(filter)) {
       this.currentFilter = filter;
       this.saveToLocalStorage(); // сохраняем выбранный фильтр
       return true;
