@@ -241,7 +241,56 @@ class TodoView {
       });
     });
   }
-}
 
+  updateButtonsState(counters) {
+    console.log('🎯 Обновляю состояние всех кнопок:', counters);
+    // 1. Кнопка "Все"
+    const allButton = document.querySelector('[data-filter="all"]');
+    if (allButton) {
+      allButton.disabled = counters.total === 0;
+      if (counters.total === 0) {
+        allButton.classList.add('todo-filter--disabled');
+      } else {
+        allButton.classList.remove('todo-filter--disabled');
+      }
+    }
+
+    // 2. Кнопка "Активные"
+    const activeButton = document.querySelector('[data-filter="active"]');
+    if (activeButton) {
+      activeButton.disabled = counters.active === 0;
+      if (counters.active === 0) {
+        activeButton.classList.add('todo-filter--disabled');
+      } else {
+        activeButton.classList.remove('todo-filter--disabled');
+      }
+    }
+
+    // 3. Кнопка "Выполненные"
+    const completedButton = document.querySelector('[data-filter="completed"]');
+    if (completedButton) {
+      completedButton.disabled = counters.completed === 0;
+      if (counters.completed === 0) {
+        completedButton.classList.add('todo-filter--disabled');
+      } else {
+        completedButton.classList.remove('todo-filter--disabled');
+      }
+    }
+
+    // 4. Кнопка "Очистить выполненные"
+    const clearButton = document.querySelector('.todo-clear');
+    if (clearButton) {
+      clearButton.disabled = counters.completed === 0;
+      if (counters.completed === 0) {
+        clearButton.classList.add('todo-clear--disabled'); // ← ЭТА СТРОКА ПРАВИЛЬНАЯ
+        clearButton.textContent = '🧹 Очистить выполненные';
+      } else {
+        clearButton.classList.remove('todo-clear--disabled'); // ← И ЭТА ТОЖЕ
+        clearButton.textContent = `🧹 Очистить выполненные (${counters.completed})`;
+      }
+    }
+    console.log('✅ Состояние кнопок обновлено');
+  }
+}
 // Создаем и экспортируем экземпляр представления
 export const todoView = new TodoView();
