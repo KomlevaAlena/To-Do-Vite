@@ -8,6 +8,7 @@ class TodoView {
     // Колбэк для удаления
     this.onDeleteCallback = null;
     this.onToggleCallback = null; // ← новое поле для чекбоксов
+    this.onFilterCallback = null; // ← новое поле для колбэка фильтрации
   }
   // Установить колбэк для удаления
   setOnDeleteCallback(callback) {
@@ -19,6 +20,12 @@ class TodoView {
   setOnToggleCallback(callback) {
     this.onToggleCallback = callback;
     console.log('✅ Колбэк для переключения статуса установлен');
+  }
+
+  // Метод для установки колбэка фильтрации
+  setOnFilterCallback(callback) {
+    this.onFilterCallback = callback;
+    console.log('✅ Колбэк для фильтрации установлен');
   }
 
   // Найти контейнер для списка (вызываем когда точно нужен)
@@ -162,6 +169,7 @@ class TodoView {
   addEventHandlers() {
     this.addDeleteHandlers();
     this.addToggleHandlers();// ← добавляем обработчики чекбоксов
+    // this.addFilterHandlers(); // ← добавляем обработчики фильтров
   }
   // Добавить обработчики на чекбоксы
   addToggleHandlers() {
@@ -185,6 +193,51 @@ class TodoView {
         } else {
           console.warn('⚠️ Нет колбэка для переключения статуса');
         }
+      });
+    });
+  }
+  // Обновить активную кнопку фильтра
+  updateActiveFilter(activeFilter) {
+    console.log('🎯 Обновляю активный фильтр:', activeFilter);
+    
+    // Находим все кнопки фильтров
+    const filterButtons = document.querySelectorAll('.todo-filter');
+    
+    // Убираем класс active у всех кнопок
+    filterButtons.forEach(button => {
+      button.classList.remove('todo-filter--active');
+    });
+    
+    // Находим нужную кнопку и добавляем класс active
+    const activeButton = document.querySelector(`[data-filter="${activeFilter}"]`);
+    if (activeButton) {
+      activeButton.classList.add('todo-filter--active');
+      console.log('✅ Активный фильтр обновлён');
+    } else {
+      console.warn('⚠️ Кнопка фильтра не найдена:', activeFilter);
+    }
+  }
+  // Добавить обработчики на кнопки фильтров
+  addFilterHandlers() {
+    const filterButtons = document.querySelectorAll('.todo-filter');
+    
+    filterButtons.forEach(button => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        
+        const filter = button.dataset.filter; // получаем значение из data-filter
+        console.log('🔘 Нажата кнопка фильтра:', filter);
+        
+        // Если есть колбэк для фильтрации - вызываем его
+        // if (this.onFilterCallback) {
+        //   this.onFilterCallback(filter);
+        // } else {
+        //   console.warn('⚠️ Нет колбэка для фильтрации');
+        // }
+        // Обработчики фильтров теперь в контроллере
+        console.log('🎯 Фильтр выбран в представлении:', filter);
+        // Обработчик будет вызван напрямую из setupFilterHandlersOnce()
+        // Ничего не делаем здесь
       });
     });
   }

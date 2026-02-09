@@ -9,28 +9,34 @@ class TodoController {
     this.todoForm = null;
     this.todoInput = null;
     this.addButton = null;
+
+    // Временно для отладки
+    window.todoController = this;
+    window.todoModel = todoModel;
+    window.todoView = todoView;
+
     console.log('📊 Модель и представление подключены');
     }
 
     init() {
-        // Метод для инициализации (запуска) контроллера
         console.log('✅ Контроллер запускается');
-        // Здесь будем настраивать всё приложение
-        // Загружаем задачи из localStorage (если есть)
+        
+        // Загружаем задачи из localStorage
         console.log('📂 Пытаюсь загрузить задачи из localStorage...');
         const hasLoaded = todoModel.loadFromLocalStorage();
-        // Сохраняем флаг что есть загруженные задачи
+        
         this.hasLoadedTasks = hasLoaded;
-
+        
         if (hasLoaded) {
-            console.log('✅ Задачи загружены из localStorage');// Показываем загруженные задачи
-            // this.updateUI();НЕ вызываем updateUI() сразу - ждём загрузки компонентов
+            console.log('✅ Задачи загружены из localStorage');
+            // НЕ вызываем updateUI() здесь - вызовем в setupEventListeners()
         } else {
             console.log('📝 localStorage пуст, начинаем с чистого листа');
         }
-        // Пробуем найти элементы сразу
+        
+        // Ищем элементы
         this.findElements();
-        // Если не нашли - ждём и пробуем снова через 100мс
+        
         if (!this.todoForm) {
             console.log('⏳ Подождите, ищем элементы...');
             this.waitForComponents();
@@ -79,6 +85,12 @@ class TodoController {
         // Устанавливаем колбэк для удаления в представлении
         todoView.setOnDeleteCallback(this.handleDeleteTodo.bind(this));// bind создаёт новую функцию, где this всегда = текущий объект
         todoView.setOnToggleCallback(this.handleToggleTodo.bind(this));// В методе setupEventListeners() добавляем установку колбэка:
+        // todoView.setOnFilterCallback(this.handleFilterChange.bind(this)); // ← новое! добавляем установку колбэка
+
+        // ДОБАВЛЯЕМ ОБРАБОТЧИКИ КНОПОК ФИЛЬТРОВ (ТОЛЬКО ОДИН РАЗ)
+        this.setupFilterHandlersOnce();
+        // ДОБАВЛЯЕМ ОБРАБОТЧИК КНОПКИ "ОЧИСТИТЬ ВЫПОЛНЕННЫЕ"
+        this.setupClearButtonHandler();
         // ЕСЛИ БЫЛИ ЗАГРУЖЕНЫ ЗАДАЧИ - отрисовываем их сейчас
         if (this.hasLoadedTasks) {
             console.log('🎨 Отрисовываю загруженные из localStorage задачи...');
@@ -123,6 +135,8 @@ class TodoController {
             console.log('✅ Задача должна быть добавлена:', todoText);
         });
         console.log('✅ Обработчик события submit добавлен');
+
+
     }
     // Метод для обработки удаления задачи
     handleDeleteTodo(todoId) {
@@ -144,16 +158,25 @@ class TodoController {
 
     updateUI() {
         console.log('🔄 Обновляю весь интерфейс...');
-        // 1. Получаем все задачи из модели
-        const allTodos = todoModel.getAllTodos();
-        console.log('📋 Задачи для отрисовки:', allTodos);
-        // 2. Получаем данные счётчиков
+        
+        // 1. Получаем ОТФИЛЬТРОВАННЫЕ задачи
+        const filteredTodos = todoModel.getFilteredTodos();
+        console.log('📋 Отфильтрованные задачи для отрисовки:', filteredTodos);
+        
+        // 2. Получаем данные счётчиков (ВСЕХ задач, а не отфильтрованных)
         const counters = todoModel.getCounters();
-        console.log('📊 Данные счётчиков:', counters);
-        // 3. Отрисовываем задачи
-        todoView.renderTodos(allTodos);
-        // 4. Обновляем счётчики
+        console.log('📊 Данные счётчиков (все задачи):', counters);
+        
+        // 3. Отрисовываем ОТФИЛЬТРОВАННЫЕ задачи
+        todoView.renderTodos(filteredTodos);
+        
+        // 4. Обновляем счётчики (показываем ВСЕ задачи)
         todoView.updateCounters(counters);
+        
+        // 5. Обновляем активную кнопку фильтра
+        const currentFilter = todoModel.getCurrentFilter();
+        todoView.updateActiveFilter(currentFilter);
+        
         console.log('✅ Интерфейс обновлён');
     }
 
@@ -174,8 +197,82 @@ class TodoController {
         }
     }
 
+    // Метод для обработки изменения фильтра
+    handleFilterChange(filter) {
+        console.log('🎯🎯🎯 ВЫЗВАН handleFilterChange с фильтром:', filter);
+        console.log('🎯 Обрабатываю изменение фильтра на:', filter);
+        
+        // Устанавливаем фильтр в модели
+        const isFilterSet = todoModel.setFilter(filter);
+        
+        if (isFilterSet) {
+            console.log('✅ Фильтр установлен в модели');
+            
+            // Обновляем активную кнопку в представлении
+            // todoView.updateActiveFilter(filter);
+            
+            // Обновляем отображение задач
+            this.updateUI();// ← ЭТА СТРОКА ВЫЗОВЕТ updateActiveFilter() САМА
+        } else {
+            console.error('❌ Не удалось установить фильтр');
+        }
+    }
+
+    setupFilterHandlersOnce() {
+        console.log('🎯 Настраиваю обработчики кнопок фильтров (один раз)');
+        // Находим все кнопки фильтров
+        const filterButtons = document.querySelectorAll('.todo-filter');
+        // Для каждой кнопки добавляем обработчик
+        filterButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();// Отменяем стандартное поведение
+
+                const filter = button.dataset.filter;// Берем тип фильтра из data-filter
+                console.log('🔘 Нажата кнопка фильтра:', filter);
+                // Вызываем обработчик фильтрации
+                this.handleFilterChange(filter);
+            });
+        });
+        console.log('✅ Обработчики фильтров добавлены (один раз)');
+    }
+
+    setupClearButtonHandler() {
+        const clearButton = document.querySelector('.todo-clear');
+        if (clearButton) {
+            clearButton.addEventListener('click', (event) => {
+                event.preventDefault();// Отменяем стандартное поведение
+                console.log('🧹 Нажата кнопка "Очистить выполненные"');
+                this.handleClearCompleted();
+            });
+            console.log('✅ Обработчик кнопки "Очистить выполненные" добавлен');
+        } else {
+            console.warn('⚠️ Кнопка "Очистить выполненные" не найдена');
+        }
+    }
+
+    handleClearCompleted() { // Метод для очистки выполненных задач
+        console.log('🎯 Обрабатываю очистку выполненных задач');
+        // Вызываем метод модели
+        const removedCount = todoModel.clearCompleted();
+        if (removedCount > 0) {
+            console.log(`✅ Удалено ${removedCount} выполненных задач`);
+            // Если сейчас выбран фильтр "completed" - переключаем на "all"
+            const currentFilter = todoModel.getCurrentFilter();
+            if (currentFilter === 'completed') {
+                console.log('🔄 Фильтр "completed" пуст, переключаю на "all"');
+                todoModel.setFilter('all');
+            }
+            // Обновляем интерфейс
+            this.updateUI();
+        } else {
+            console.log('📝 Нет выполненных задач для удаления');
+            // Можно показать сообщение пользователю
+        }
+    }
 }
 
 const todoController = new TodoController(); // Создаём экземпляр (объект) нашего контроллера
+
+
 
 export { todoController }; // Экспортируем его, чтобы использовать в других файлах
