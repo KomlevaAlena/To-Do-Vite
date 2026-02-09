@@ -172,6 +172,9 @@ class TodoController {
         
         // 4. Обновляем счётчики (показываем ВСЕ задачи)
         todoView.updateCounters(counters);
+
+        // 4.5. Обновляем состояние ВСЕХ кнопок
+        todoView.updateButtonsState(counters);
         
         // 5. Обновляем активную кнопку фильтра
         const currentFilter = todoModel.getCurrentFilter();
@@ -226,6 +229,12 @@ class TodoController {
         filterButtons.forEach(button => {
             button.addEventListener('click', (event) => {
                 event.preventDefault();// Отменяем стандартное поведение
+
+                // Проверяем, не отключена ли кнопка
+                if (button.disabled || button.classList.contains('todo-filter--disabled')) {
+                    console.log('⏸️ Кнопка отключена, игнорируем клик');
+                    return;
+                }
 
                 const filter = button.dataset.filter;// Берем тип фильтра из data-filter
                 console.log('🔘 Нажата кнопка фильтра:', filter);
