@@ -169,7 +169,7 @@ class TodoView {
   addEventHandlers() {
     this.addDeleteHandlers();
     this.addToggleHandlers();// ← добавляем обработчики чекбоксов
-    this.addFilterHandlers(); // ← добавляем обработчики фильтров
+    // this.addFilterHandlers(); // ← добавляем обработчики фильтров
   }
   // Добавить обработчики на чекбоксы
   addToggleHandlers() {
@@ -229,11 +229,15 @@ class TodoView {
         console.log('🔘 Нажата кнопка фильтра:', filter);
         
         // Если есть колбэк для фильтрации - вызываем его
-        if (this.onFilterCallback) {
-          this.onFilterCallback(filter);
-        } else {
-          console.warn('⚠️ Нет колбэка для фильтрации');
-        }
+        // if (this.onFilterCallback) {
+        //   this.onFilterCallback(filter);
+        // } else {
+        //   console.warn('⚠️ Нет колбэка для фильтрации');
+        // }
+        // Обработчики фильтров теперь в контроллере
+        console.log('🎯 Фильтр выбран в представлении:', filter);
+        // Обработчик будет вызван напрямую из setupFilterHandlersOnce()
+        // Ничего не делаем здесь
       });
     });
   }

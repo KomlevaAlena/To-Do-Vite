@@ -197,6 +197,24 @@ class TodoModel {
   getCurrentFilter() {
     return this.currentFilter;
   }
+
+  clearCompleted() {
+    console.log('🧹 Удаляю выполненные задачи...');
+    // Сохраняем старый размер для отладки
+    const oldLength = this.todos.length;
+    // Фильтруем: оставляем только НЕ выполненные задачи
+    const activeTodos = this.todos.filter(todo => !todo.completed);
+    // Заменяем массив
+    this.todos = activeTodos;
+    // Считаем сколько удалили
+    const removedCount = oldLength - this.todos.length;
+    // Сохраняем в localStorage
+    this.saveToLocalStorage();
+    console.log(`✅ Удалено ${removedCount} выполненных задач`);
+    console.log(`📋 Осталось ${this.todos.length} активных задач`);
+    
+    return removedCount; // Возвращаем сколько удалили
+  }
 }
 
 // if (typeof window !== 'undefined') {

@@ -28,6 +28,9 @@ export const components = {
       <button class="todo-filter" data-filter="completed">
         ✅ Выполненные
       </button>
+      <button class="todo-clear" data-action="clear">
+        🧹 Очистить выполненные
+      </button>
     </div>
     
     <!-- Форма добавления -->
