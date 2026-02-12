@@ -46,7 +46,8 @@
   line-height: 1.4; // ← Межстрочный интервал
 }
 
-.todo-item__delete {
+.todo-item__delete,
+.todo-item__copy {
   flex-shrink: 0;
   background: none;
   border: none;

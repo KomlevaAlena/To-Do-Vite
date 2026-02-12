@@ -28,6 +28,11 @@ class TodoView {
     console.log('✅ Колбэк для фильтрации установлен');
   }
 
+  setOnCopyCallback(callback) {
+    this.onCopyCallback = callback;
+    console.log('✅ Колбэк для копирования установлен');
+  }
+
   // Найти контейнер для списка (вызываем когда точно нужен)
   findContainer() {
     if (!this.todoListContainer) {
@@ -171,6 +176,7 @@ class TodoView {
     this.addDeleteHandlers();
     this.addToggleHandlers();// ← добавляем обработчики чекбоксов
     // this.addFilterHandlers(); // ← добавляем обработчики фильтров
+    this.addCopyHandlers();
   }
   // Добавить обработчики на чекбоксы
   addToggleHandlers() {
@@ -239,6 +245,21 @@ class TodoView {
         console.log('🎯 Фильтр выбран в представлении:', filter);
         // Обработчик будет вызван напрямую из setupFilterHandlersOnce()
         // Ничего не делаем здесь
+      });
+    });
+  }
+ //Добавить обработчик кликов на кнопки копирования
+  addCopyHandlers() {
+    const copyButtons = document.querySelectorAll('.todo-item__copy');
+    copyButtons.forEach(button => {
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const todoTtem = button.closest('.todo-item');
+        const todoId = parseInt(todoTtem.dataset.id);
+        console.log('📋 Копирую задачу с id:', todoId);
+        if (this.onCopyCallback) {
+          this.onCopyCallback(todoId);
+        }
       });
     });
   }

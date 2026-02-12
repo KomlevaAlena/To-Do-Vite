@@ -86,6 +86,7 @@ class TodoController {
         todoView.setOnDeleteCallback(this.handleDeleteTodo.bind(this));// bind создаёт новую функцию, где this всегда = текущий объект
         todoView.setOnToggleCallback(this.handleToggleTodo.bind(this));// В методе setupEventListeners() добавляем установку колбэка:
         // todoView.setOnFilterCallback(this.handleFilterChange.bind(this)); // ← новое! добавляем установку колбэка
+        todoView.setOnCopyCallback(this.handleCopyTodo.bind(this));// Устанавливаем колбэк для копирования
 
         // ДОБАВЛЯЕМ ОБРАБОТЧИКИ КНОПОК ФИЛЬТРОВ (ТОЛЬКО ОДИН РАЗ)
         this.setupFilterHandlersOnce();
@@ -278,6 +279,16 @@ class TodoController {
             // Можно показать сообщение пользователю
         }
     }
+    // Метод для обработки копирования задачи
+    handleCopyTodo(todoId) {
+        console.log('🎯 Обрабатываю копирование задачи с id:', todoId);
+        const copiedTodo = todoModel.copyTodo(todoId);
+        if (copiedTodo) {
+            console.log('✅ Задача скопирована:', copiedTodo);
+            this.updateUI();
+        }
+    }
+
 }
 
 const todoController = new TodoController(); // Создаём экземпляр (объект) нашего контроллера
