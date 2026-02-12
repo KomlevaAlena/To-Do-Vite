@@ -215,6 +215,29 @@ class TodoModel {
     
     return removedCount; // Возвращаем сколько удалили
   }
+  // Копировать задачу по ID
+  copyTodo(id) {
+    console.log('📋 Копирую задачу с id:', id);
+    // Находим задачу
+    const originalTodo = this.todos.find(todo => todo.id === id);
+    if (!originalTodo) {
+      console.log('❌ Задача не найдена');
+      return null;
+    }
+    // Создаём копию с новым ID
+    const copiedTodo = {
+      id: this.nextId++,
+      text: originalTodo.text + ' (копия)',
+      completed: false // Копия всегда не выполнена
+    };
+    // Добавляем в массив
+    this.todos.push(copiedTodo);
+    //Save
+    this.saveToLocalStorage();
+    console.log('✅ Задача скопирована:', copiedTodo);
+    return copiedTodo;
+  }
+
 }
 
 // if (typeof window !== 'undefined') {
