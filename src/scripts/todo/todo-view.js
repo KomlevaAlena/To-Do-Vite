@@ -66,7 +66,8 @@ class TodoView {
     <div class="todo-item__content ${completedClass}">
       <span class="todo-item__text">${this.escapeHtml(todo.text)}</span>
     </div>
-    <button class="todo-item__delete" data-action="delete">🗑️</button>
+    <button class="todo-item__copy" data-action="copy" title="Копировать задачу">📋</button>
+    <button class="todo-item__delete" data-action="delete" title="Удалить задачу">🗑️</button>
   `;
     
     return todoItem;
