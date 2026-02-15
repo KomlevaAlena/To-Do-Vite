@@ -87,6 +87,7 @@ class TodoController {
         todoView.setOnToggleCallback(this.handleToggleTodo.bind(this));// В методе setupEventListeners() добавляем установку колбэка:
         // todoView.setOnFilterCallback(this.handleFilterChange.bind(this)); // ← новое! добавляем установку колбэка
         todoView.setOnCopyCallback(this.handleCopyTodo.bind(this));// Устанавливаем колбэк для копирования
+        todoView.setOnEditCallback(this.handlerEditTodo.bind(this));// Устанавливаем колбэк для редактирования
 
         // ДОБАВЛЯЕМ ОБРАБОТЧИКИ КНОПОК ФИЛЬТРОВ (ТОЛЬКО ОДИН РАЗ)
         this.setupFilterHandlersOnce();
@@ -288,6 +289,19 @@ class TodoController {
             this.updateUI();
         }
     }
+    // Метод для обработки редактирования задачи
+    handlerEditTodo(todoId, newText) {
+        console.log('🎯 Обрабатываю редактирование задачи с id:', todoId, 'новый текст:', newText);
+
+        const isEdited = todoModel.edinTodo(todoId, newText);
+        if (isEdited) {
+            console.log('✅ Задача отредактирована');
+            this.updateUI();// Обновляем интерфейс
+        } else {
+            console.error('❌ Не удалось отредактировать задачу');
+        }
+    }
+
 
 }
 

@@ -5,10 +5,11 @@ class TodoView {
     
     // НЕ ищем элемент сразу - он может быть ещё не загружен
     this.todoListContainer = null;
-    // Колбэк для удаления
-    this.onDeleteCallback = null;
+    this.onDeleteCallback = null;// Колбэк для удаления
     this.onToggleCallback = null; // ← новое поле для чекбоксов
     this.onFilterCallback = null; // ← новое поле для колбэка фильтрации
+    this.onCopyCallback = null;
+    this.onEditCallback = null;
   }
   // Установить колбэк для удаления
   setOnDeleteCallback(callback) {
@@ -81,7 +82,7 @@ class TodoView {
   `;
 
   // Добавляем обработчик двойного клика
-  const textSpan = todoItem/querySelector('.todo-item__text');
+  const textSpan = todoItem.querySelector('.todo-item__text');
   textSpan.addEventListener('dblclick', (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -159,16 +160,103 @@ class TodoView {
             }
             // Здесь будем вызывать метод удаления из контроллера
             // Пока просто удаляем элемент со страницы (временно)
-            
             console.log('✅ Задача удалена со страницы (временно)');
         });
     });
-    // Создать редактор прямо в строке
-    // createInlineEditor(textSpan, todo) {
-
-    // }
-
   }
+  // Создать редактор прямо в строке
+  createInlineEditor(textSpan, todo) {
+    // Сохраняем оригинальный текст
+    const originalText = todo.text;
+    // Создаём поле ввода
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = originalText;
+    input.className = 'todo-item__edit-input';
+    // Заменяем span на input
+    const parentDiv = textSpan.parentElement;
+    parentDiv.replaceChild(input, textSpan);
+    input.focus(); // Ставим курсор в поле
+
+    // Функция для очистки всех обработчиков
+    const cleanup = () => {
+      input.removeEventListener('blur', onBlur);
+      input.removeEventListener('keypress', onKeyPress);
+      input.removeEventListener('keydown', onKeyDown);
+    };
+    // Обработчик потери фокуса
+    const onBlur = () => {
+      cleanup();
+      this.saveEdit(input, todo.id, parentDiv);
+    }
+    // Обработчик нажатия Enter
+    const onKeyPress = (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        cleanup();
+        this.saveEdit(input, todo.id, parentDiv);
+      }
+    };
+    // Обработчик Escape
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        cleanup();
+        this.cancelEdit(input, originalText, parentDiv);
+      }
+    }
+    // 👇 ВОТ ТУТ МЫ ДОБАВЛЯЕМ НОВЫЕ ОБРАБОТЧИКИ 👇
+    input.addEventListener('blur', onBlur);
+    input.addEventListener('keypress', onKeyPress);
+    input.addEventListener('keydown', onKeyDown);
+    
+    // // Обработчик потери фокуса (сохраняем)
+    // input.addEventListener('blur', () => {
+    //   this.saveEdit(input, todo.id, parentDiv);
+    // });
+    // // Обработчик нажатия Enter (сохраняем)
+    // input.addEventListener('keypress', (event) =>{
+    //   if (event.key === 'Enter') {
+    //     event.preventDefault();
+    //     this.saveEdit(input, todo.id, parentDiv);
+    //   }
+    // });
+    // // Обработчик Escape (отменяем)
+    // input.addEventListener('keydown', (event) => {
+    //   if (event.key === 'Escape') {
+    //     event.preventDefault();
+    //     this.cancelEdit(input, todo.id, parentDiv);
+    //   }
+    // });
+  }
+
+    // Сохранить изменения
+    saveEdit(input, todoId, parentDiv) {
+      const newText = input.value.trim();
+      // Создаём span обратно
+      const newSpan = document.createElement('span');
+      newSpan.className = 'todo-item__text';
+      // Если пусто - отменяем
+      if (newText === '') {
+        newSpan.textContent = input.defaultValue;
+        parentDiv.replaceChild(newSpan, input);
+        return;
+      }
+      // Обновляем текст в span
+      newSpan.textContent = this.escapeHtml(newText);
+      parentDiv.replaceChild(newSpan, input);
+      // Вызываем колбэк для сохранения в модели
+      if(this.onEditCallback) {
+        this.onEditCallback(todoId, newText);
+      }
+    }
+    // Отменить редактирование
+    cancelEdit(input, originalText, parentDiv) {
+      const newSpan = document.createElement('span');
+      newSpan.className = 'todo-item__text';
+      newSpan.textContent = this.escapeHtml(originalText);
+      parentDiv.replaceChild(newSpan, input);
+    }
 
   // Обновить счётчики задач
   updateCounters(counters) {
