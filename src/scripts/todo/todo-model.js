@@ -237,6 +237,29 @@ class TodoModel {
     console.log('✅ Задача скопирована:', copiedTodo);
     return copiedTodo;
   }
+  // Редактировать текст задачи
+  edinTodo(id, newText) {
+    console.log('✏️ Редактирую задачу с id:', id, 'новый текст:', newText);
+    // Проверяем, что текст не пустой
+    if (!newText || newText.trim() === '') {
+      console.log('❌ Пустой текст, редактирование отменено');
+      return false;
+    }
+    // Находим задачу
+    const todo = this.todos.find(todo => todo.id === id);
+    if (!todo) {
+      console.log('❌ Задача не найдена');
+      return false;
+    }
+    // Обновляем текст (убираем лишние пробелы)
+    const oldText = todo.text;
+    todo.text = newText.trim();
+    // Сохраняем
+    this.saveToLocalStorage();
+    console.log('✅ Текст изменён с "' + oldText + '" на "' + todo.text + '"');
+    return true;
+  }
+
 
 }
 

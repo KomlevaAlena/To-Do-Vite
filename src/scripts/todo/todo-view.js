@@ -33,6 +33,11 @@ class TodoView {
     console.log('✅ Колбэк для копирования установлен');
   }
 
+  setOnEditCallback(callback) {
+    this.onEditCallback = callback;
+    console.log('✅ Колбэк для редактирования установлен');
+  }
+
   // Найти контейнер для списка (вызываем когда точно нужен)
   findContainer() {
     if (!this.todoListContainer) {
@@ -69,11 +74,21 @@ class TodoView {
       >
     </div>
     <div class="todo-item__content ${completedClass}">
-      <span class="todo-item__text">${this.escapeHtml(todo.text)}</span>
+      <span class="todo-item__text" data-id="${todo.id}">${this.escapeHtml(todo.text)}</span>
     </div>
     <button class="todo-item__copy" data-action="copy" title="Копировать задачу">📋</button>
     <button class="todo-item__delete" data-action="delete" title="Удалить задачу">🗑️</button>
   `;
+
+  // Добавляем обработчик двойного клика
+  const textSpan = todoItem/querySelector('.todo-item__text');
+  textSpan.addEventListener('dblclick', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log('✏️ Двойной клик по задаче с id:', todo.id);
+    // Вызываем метод для создания редактора
+    this.createInlineEditor(textSpan, todo);
+  }); 
     
     return todoItem;
   }
@@ -148,6 +163,11 @@ class TodoView {
             console.log('✅ Задача удалена со страницы (временно)');
         });
     });
+    // Создать редактор прямо в строке
+    // createInlineEditor(textSpan, todo) {
+
+    // }
+
   }
 
   // Обновить счётчики задач
