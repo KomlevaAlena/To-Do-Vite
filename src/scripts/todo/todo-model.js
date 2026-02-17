@@ -260,7 +260,63 @@ class TodoModel {
     return true;
   }
 
-
+//   moveTodo(draggedId, targetId) {
+//     console.log('📦 Перемещаю задачу', draggedId, 'на место', targetId);
+    
+//     // Находим индексы задач
+//     const draggedIndex = this.todos.findIndex(t => t.id === draggedId);
+//     const targetIndex = this.todos.findIndex(t => t.id === targetId);
+    
+//     // Если не нашли какую-то задачу — ошибка
+//     if (draggedIndex === -1 || targetIndex === -1) {
+//         console.log('❌ Задачи не найдены');
+//         return false;
+//     }
+    
+//     // Вырезаем перетаскиваемую задачу из массива
+//     const [draggedTodo] = this.todos.splice(draggedIndex, 1);
+    
+//     // Определяем новый индекс для вставки
+//     // Если draggedIndex был меньше targetIndex, то после удаления targetIndex уменьшается на 1
+//     const newTargetIndex = draggedIndex < targetIndex ? targetIndex - 1 : targetIndex;
+    
+//     // Вставляем задачу на новое место
+//     this.todos.splice(newTargetIndex, 0, draggedTodo); // ← БЫЛО slice, СТАЛО splice!
+    
+//     // Сохраняем в localStorage
+//     this.saveToLocalStorage();
+    
+//     console.log('✅ Порядок задач изменён. Теперь задачи:', this.todos.map(t => t.id));
+//     return true;
+// }
+  moveTodo(draggedId, targetId) {
+      console.log('📦 Перемещаю задачу', draggedId, 'на место', targetId);
+      
+      // Находим индексы
+      const draggedIndex = this.todos.findIndex(t => t.id === draggedId);
+      const targetIndex = this.todos.findIndex(t => t.id === targetId);
+      
+      if (draggedIndex === -1 || targetIndex === -1) {
+          console.log('❌ Задачи не найдены');
+          return false;
+      }
+      
+      // Удаляем перетаскиваемую задачу
+      const [draggedTodo] = this.todos.splice(draggedIndex, 1);
+      
+      // Определяем новый индекс с учётом удаления
+      let newIndex = targetIndex;
+      if (draggedIndex < targetIndex) {
+          newIndex = targetIndex - 1; // Если тащили сверху вниз
+      }
+      
+      // Вставляем на новое место
+      this.todos.splice(newIndex, 0, draggedTodo);
+      
+      this.saveToLocalStorage();
+      console.log('✅ Новый порядок:', this.todos.map(t => t.id));
+      return true;
+  }
 }
 
 // if (typeof window !== 'undefined') {
