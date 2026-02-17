@@ -59,6 +59,7 @@ class TodoView {
     // Создаем div для задачи
     const todoItem = document.createElement('div');
     todoItem.className = 'todo-item';
+    todoItem.draggable = true; // Разрешаем тащить эту задачу
     todoItem.dataset.id = todo.id; // Сохраняем id в data-атрибут
 
     // Определяем класс для выполненной задачи
@@ -89,7 +90,43 @@ class TodoView {
     console.log('✏️ Двойной клик по задаче с id:', todo.id);
     // Вызываем метод для создания редактора
     this.createInlineEditor(textSpan, todo);
-  }); 
+  });
+
+  todoItem.addEventListener('dragstart', (event) => {
+    console.log('🟢 Начали тащить задачу с id:', todo.id);
+    // Запоминаем, какую задачу тащим
+    event.dataTransfer.setData('text/plain', todo.id);
+    // Добавляем класс для стилей
+    todoItem.classList.add('todo-item--dragging');
+  });
+  // Когда ЗАКОНЧИЛИ тащить (отпустили или отменили)
+  todoItem.addEventListener('dragend', () => {
+    console.log('🔴 Закончили тащить задачу');
+    // Убираем класс
+    todoItem.classList.remove('todo-item--dragging');
+    // Убираем подсветку со всех задач
+    document.querySelectorAll('.todo-item').forEach(item => {
+      item.classList.remove('todo-item--drag-over');
+    });
+  });
+  // Когда тащим задачу НАД другой задачей
+  todoItem.addEventListener('dragend', (event) => {
+    event.preventDefault();
+    todoItem.classList.add('todo-item--drag-over');
+  });
+  // Когда уводим мышь с задачи
+  todoItem.addEventListener('dragleave', () => {
+    todoItem.classList.remove('todo-item--drag-over');
+  });
+  // Когда БРОСАЕМ задачу на эту задачу
+  todoItem.addEventListener('drop', (event) => {
+    event.preventDefault();
+    todoItem.classList.remove('todo-item--drag-over');
+    // Достаём id задачи, которую тащили
+    const draggedId = parseInt(event.dataTransfer.getData('text/plain'));
+    const targetId = todo.id // id задачи, на которую бросили
+    console.log('🎯 Бросаем задачу', draggedId, 'на задачу', targetId);
+  });
     
     return todoItem;
   }

@@ -62,3 +62,16 @@
     background: #ffeaea;
   }
 }
+
+/* Когда задача тащится */
+.todo-item--dragging {
+  opacity: 0.5; /* Полупрозрачная */
+  transform: scale(0.98); /* Чуть меньше размер */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Тень */
+}
+
+/* Когда мышь над задачей, куда можно бросить */
+.todo-item--drag-over {
+  border: 2px dashed #3498db;
+  background: #e3f2fd;
+}
