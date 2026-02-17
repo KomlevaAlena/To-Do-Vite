@@ -88,6 +88,7 @@ class TodoController {
         // todoView.setOnFilterCallback(this.handleFilterChange.bind(this)); // ← новое! добавляем установку колбэка
         todoView.setOnCopyCallback(this.handleCopyTodo.bind(this));// Устанавливаем колбэк для копирования
         todoView.setOnEditCallback(this.handlerEditTodo.bind(this));// Устанавливаем колбэк для редактирования
+        todoView.setOnDragDropCallback(this.handleDragDrop.bind(this));// Устанавливаем колбэк для drag & drop
 
         // ДОБАВЛЯЕМ ОБРАБОТЧИКИ КНОПОК ФИЛЬТРОВ (ТОЛЬКО ОДИН РАЗ)
         this.setupFilterHandlersOnce();
@@ -137,8 +138,6 @@ class TodoController {
             console.log('✅ Задача должна быть добавлена:', todoText);
         });
         console.log('✅ Обработчик события submit добавлен');
-
-
     }
     // Метод для обработки удаления задачи
     handleDeleteTodo(todoId) {
@@ -301,8 +300,16 @@ class TodoController {
             console.error('❌ Не удалось отредактировать задачу');
         }
     }
-
-
+    // Метод для обработки перетаскивания
+    handleDragDrop(draggedId, targetId) {
+        console.log('🎯 Обрабатываю перетаскивание задачи', draggedId, '→', targetId);
+        // Вызываем метод модели
+        const isMoved = todoModel.moveTodo(draggedId, targetId);
+        if(isMoved) {
+            console.log('✅ Порядок изменён, обновляю интерфейс');
+            this.updateUI(); // Перерисовываем задачи в новом порядке
+        }
+    }
 }
 
 const todoController = new TodoController(); // Создаём экземпляр (объект) нашего контроллера

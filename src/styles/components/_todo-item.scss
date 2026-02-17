@@ -65,13 +65,77 @@
 
 /* Когда задача тащится */
 .todo-item--dragging {
-  opacity: 0.5; /* Полупрозрачная */
-  transform: scale(0.98); /* Чуть меньше размер */
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2); /* Тень */
+  opacity: 0.5;
+  transform: scale(0.98);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* Когда мышь над задачей, куда можно бросить */
+/* Когда мышь над задачей, куда можно бросить - ЕДИНСТВЕННОЕ ОПРЕДЕЛЕНИЕ! */
 .todo-item--drag-over {
-  border: 2px dashed #3498db;
-  background: #e3f2fd;
+  border: 2px dashed #3498db !important;
+  background: #e3f2fd !important;
+  transform: scale(1.02);
+  position: relative;
+  z-index: 100;
+}
+
+/* Стрелка для указания места */
+.todo-item--drag-over::after {
+    content: '⬇️ Бросить сюда';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #3498db;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0.8;
+    pointer-events: none; /* Чтобы не мешала кликам */
+}
+
+/* Для верхней части задачи */
+.todo-item--drag-over-top {
+    border-top: 3px solid #3498db !important;
+}
+
+/* Для нижней части задачи */
+.todo-item--drag-over-bottom {
+    border-bottom: 3px solid #3498db !important;
+}
+
+/* Чтобы внутренние элементы не мешали drag & drop */
+.todo-item__checkbox,
+.todo-item__content,
+.todo-item__copy,
+.todo-item__delete {
+    pointer-events: none;
+}
+
+/* Чекбокс должен работать */
+.todo-item__checkbox-input {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* Чтобы задачи не выделялись при перетаскивании */
+.todo-item {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Контейнер для списка */
+.todo-list__container {
+    min-height: 200px;
+}
+
+.todo-list__container.drag-over {
+    border: 2px dashed #3498db;
+}
+
+/* Анимация для стрелки */
+@keyframes bounce {
+    0%, 100% { transform: translateY(-50%) translateX(0); }
+    50% { transform: translateY(-50%) translateX(5px); }
 }
