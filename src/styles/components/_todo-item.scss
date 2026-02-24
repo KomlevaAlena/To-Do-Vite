@@ -35,6 +35,7 @@
 .todo-item__content {
   flex-grow: 1;
   transition: all 0.3s;
+  padding: 0 5px;
   min-width: 0; // ← ВАЖНО! Позволяет элементу сжиматься
 }
 
@@ -106,11 +107,29 @@
 }
 
 /* Чтобы внутренние элементы не мешали drag & drop */
+// .todo-item__checkbox,
+// .todo-item__content,
+// .todo-item__copy,
+// .todo-item__delete {
+//     pointer-events: none;
+// }
+/* Элементы, которые НЕ должны мешать drag & drop */
 .todo-item__checkbox,
-.todo-item__content,
+.todo-item__content {
+    pointer-events: none;
+}
+
+/* Кнопки ДОЛЖНЫ работать */
 .todo-item__copy,
 .todo-item__delete {
-    pointer-events: none;
+    pointer-events: auto;  /* ← ВКЛЮЧАЕМ ОБРАТНО */
+    cursor: pointer;       /* Добавляем указатель для красоты */
+}
+
+.todo-item__copy:hover,
+.todo-item__delete:hover {
+    transform: scale(1.1);  /* Небольшой эффект при наведении */
+    transition: transform 0.2s ease;
 }
 
 /* Чекбокс должен работать */
