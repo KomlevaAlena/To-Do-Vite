@@ -10,9 +10,9 @@
     }
 }
 
-.todo-item {
-    animation: slideIn 0.3s ease-out;
-}
+// .todo-item {
+//     // animation: slideIn 0.3s ease-out;
+// }
 
 // del tasks
 .todo-item.removing {
@@ -32,30 +32,33 @@
 
 .todo-item--completed .todo-item__text {
     text-decoration: line-through;
-    color: #888;
-    transform: scale(0.95);
+    color: var(--text-secondary);
+    // transform: scale(0.95);
     transition: all 0.3s ease;
 }
 //checkbox
-.todo-item__checkbox-input {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+// .todo-item__checkbox-input {
+//     transition: transform 0.2s ease, box-shadow 0.2s ease;
+// }
 
-.todo-item__checkbox-input:checked {
-    transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
-}
+// .todo-item__checkbox-input:checked {
+//     transform: scale(1.1);
+//     box-shadow: 0 0 10px var(--accent-color);
+// }
 
-.todo-item__checkbox-input:checked::after {
-    content: '✓';
-    animation: popIn 0.2s ease;
-}
+// .todo-item__checkbox-input:checked::after {
+//     content: '✓';
+//     animation: popIn 0.2s ease;
+// }
 
-@keyframes popIn {
-    0% { transform: scale(0); }
-    80% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
+// @keyframes popIn {
+//     0% { transform: scale(0); }
+//     80% { transform: scale(1.2); }
+//     100% { transform: scale(1); }
+// }
+
+
+
 //button
 .todo-filter, .todo-clear {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -63,7 +66,7 @@
 
 .todo-filter:hover, .todo-clear:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .todo-filter:active, .todo-clear:active:not(:disabled) {
@@ -78,7 +81,7 @@
 
 .todo-counter__value.changed {
     transform: scale(1.2);
-    color: #3498db;
+    color: var(--accent-color);
 }
 //filter
 .todo-filter--active {
@@ -93,7 +96,7 @@
     left: 0;
     width: 100%;
     height: 3px;
-    background: white;
+    background: var(--bg-primary);
     animation: slideUnder 0.3s ease;
 }
 
@@ -109,7 +112,7 @@
 .todo-item--dragging {
     opacity: 0.6;
     transform: scale(0.98) rotate(1deg);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 20px var(--shadow-color);
     transition: all 0.2s ease;
 }
 

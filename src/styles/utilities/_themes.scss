@@ -1,0 +1,33 @@
+// _themes.scss - переменные для тем
+
+// Светлая тема (по умолчанию)
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --text-primary: #2c3e50;
+    --text-secondary: #546e7a;
+    --border-color: #e0e0e0;
+    --accent-color: #3498db;
+    --accent-hover: #2980b9;
+    --danger-color: #ff6b6b;
+    --danger-hover: #ff5252;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --todo-bg: #ffffff;
+    --todo-hover: #f8f9fa;
+}
+
+// Тёмная тема
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --border-color: #404040;
+    --accent-color: #5dade2;
+    --accent-hover: #3498db;
+    --danger-color: #ff8a8a;
+    --danger-hover: #ff6b6b;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --todo-bg: #2d2d2d;
+    --todo-hover: #3d3d3d;
+}
