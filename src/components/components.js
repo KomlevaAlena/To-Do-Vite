@@ -3,6 +3,9 @@ export const components = {
   'todo-app': `
   <div class="todo-app">
     <h1 class="todo-app__title">To-Do List</h1>
+    <button class="theme-toggle" title="Переключить тему">
+      🌙 Темная тема
+    </button>
     
     <!-- Счётчики задач -->
     <div class="todo-counters">

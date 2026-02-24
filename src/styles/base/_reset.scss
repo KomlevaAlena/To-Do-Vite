@@ -6,12 +6,13 @@
 
 body {
   font-family: $font-family;
-  background: $background-color;
-  color: $text-color;
+  background: var(--bg-page);
+  color: var(--text-primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   line-height: 1.6;
+  transition: background 0.3s ease;
 }
 
 .main {

@@ -1,5 +1,8 @@
 @import 'variables';
 
+//Темы
+@import 'utilities/themes';
+
 // Базовые стили
 @import 'base/reset';
 
@@ -10,3 +13,5 @@
 @import 'components/todo-item';
 @import 'components/todo-counters';
 @import 'components/todo-filters';
+@import 'components/animation';
+@import 'components/ui/theme-toggle';

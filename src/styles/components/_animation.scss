@@ -1,0 +1,131 @@
+//add tasks
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// .todo-item {
+//     // animation: slideIn 0.3s ease-out;
+// }
+
+// del tasks
+.todo-item.removing {
+    animation: slideOut 0.3s ease-in forwards;
+}
+
+@keyframes slideOut {
+    to {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+}
+//status swich
+.todo-item__text {
+    transition: all 0.3s ease;
+}
+
+.todo-item--completed .todo-item__text {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+    // transform: scale(0.95);
+    transition: all 0.3s ease;
+}
+//checkbox
+// .todo-item__checkbox-input {
+//     transition: transform 0.2s ease, box-shadow 0.2s ease;
+// }
+
+// .todo-item__checkbox-input:checked {
+//     transform: scale(1.1);
+//     box-shadow: 0 0 10px var(--accent-color);
+// }
+
+// .todo-item__checkbox-input:checked::after {
+//     content: '✓';
+//     animation: popIn 0.2s ease;
+// }
+
+// @keyframes popIn {
+//     0% { transform: scale(0); }
+//     80% { transform: scale(1.2); }
+//     100% { transform: scale(1); }
+// }
+
+
+
+//button
+.todo-filter, .todo-clear {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.todo-filter:hover, .todo-clear:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.todo-filter:active, .todo-clear:active:not(:disabled) {
+    transform: translateY(0);
+    transition: all 0.1s;
+}
+//counter
+.todo-counter__value {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+.todo-counter__value.changed {
+    transform: scale(1.2);
+    color: var(--accent-color);
+}
+//filter
+.todo-filter--active {
+    position: relative;
+    overflow: hidden;
+}
+
+.todo-filter--active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--bg-primary);
+    animation: slideUnder 0.3s ease;
+}
+
+@keyframes slideUnder {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+}
+//drag and drop
+.todo-item {
+    transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+.todo-item--dragging {
+    opacity: 0.6;
+    transform: scale(0.98) rotate(1deg);
+    box-shadow: 0 10px 20px var(--shadow-color);
+    transition: all 0.2s ease;
+}
+
+.todo-item--drag-over {
+    transform: scale(1.02);
+    transition: all 0.2s ease;
+}
+//empty list
+.todo-list__empty {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.02); }
+}

@@ -10,6 +10,8 @@ class TodoController {
     this.todoInput = null;
     this.addButton = null;
 
+    this.currentTheme = localStorage.getItem('todoApp_theme') || 'light';
+
     // Временно для отладки
     window.todoController = this;
     window.todoModel = todoModel;
@@ -90,11 +92,15 @@ class TodoController {
         todoView.setOnEditCallback(this.handlerEditTodo.bind(this));// Устанавливаем колбэк для редактирования
         todoView.setOnDragDropCallback(this.handleDragDrop.bind(this));// Устанавливаем колбэк для drag & drop
 
+        this.setupThemeToggle();
+
         // ДОБАВЛЯЕМ ОБРАБОТЧИКИ КНОПОК ФИЛЬТРОВ (ТОЛЬКО ОДИН РАЗ)
         this.setupFilterHandlersOnce();
         // ДОБАВЛЯЕМ ОБРАБОТЧИК КНОПКИ "ОЧИСТИТЬ ВЫПОЛНЕННЫЕ"
         this.setupClearButtonHandler();
         // ЕСЛИ БЫЛИ ЗАГРУЖЕНЫ ЗАДАЧИ - отрисовываем их сейчас
+
+
         if (this.hasLoadedTasks) {
             console.log('🎨 Отрисовываю загруженные из localStorage задачи...');
             this.updateUI();
@@ -309,6 +315,42 @@ class TodoController {
             console.log('✅ Порядок изменён, обновляю интерфейс');
             this.updateUI(); // Перерисовываем задачи в новом порядке
         }
+    }
+    setupThemeToggle() {
+    const themeButton = document.querySelector('.theme-toggle');
+    if (!themeButton) return;
+    // Удаляем старый обработчик, если есть
+    const oldButton = themeButton;
+    const newButton = oldButton.cloneNode(true); // клонируем кнопку
+    oldButton.parentNode.replaceChild(newButton, oldButton); // заменяем
+    // Устанавливаем начальное состояние
+    if (this.currentTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        newButton.textContent = '☀️ Светлая тема';
+    } else {
+        newButton.textContent = '🌙 Темная тема';
+    }
+    // Вешаем новый обработчик
+    newButton.addEventListener('click', () => {
+        this.toggleTeme();
+    });
+}
+
+    toggleTeme() {
+        // Переключаем тему
+        this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+        // Устанавливаем атрибут на html
+        document.documentElement.setAttribute('data-theme', this.currentTheme);
+        // Меняем текст кнопки
+        const themeButton = document.querySelector('.theme-toggle');
+        if (themeButton) {
+            themeButton.textContent = this.currentTheme === 'light'
+                ? '🌙 Темная тема'
+                : '☀️ Светлая тема';
+        }
+        // Сохраняем в localStorage
+        localStorage.setItem('todoApp_theme', this.currentTheme);
+        console.log('🎨 Тема переключена на:', this.currentTheme);
     }
 }
 
