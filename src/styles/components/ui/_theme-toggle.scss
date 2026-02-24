@@ -1,16 +1,51 @@
-.theme-toggle {
-    padding: 8px 16px;
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-    border: 2px solid var(--border-color);
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
+// .theme-toggle {
+//     padding: 8px 16px;
+//     background: var(--bg-secondary);
+//     color: var(--text-primary);
+//     border: 2px solid var(--border-color);
+//     border-radius: 6px;
+//     cursor: pointer;
+//     font-size: 14px;
+//     transition: all 0.3s ease;
     
-    &:hover {
-        border-color: var(--accent-color);
-        color: var(--accent-color);
-        transform: translateY(-2px);
-    }
+//     &:hover {
+//         border-color: var(--accent-color);
+//         color: var(--accent-color);
+//         transform: translateY(-2px);
+//     }
+// }
+
+.todo-app__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.theme-toggle {
+  padding: 8px 16px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
 }
