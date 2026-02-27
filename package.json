@@ -16,7 +16,7 @@
   "homepage": "https://komlevaalena.github.io/To-Do-Vite/",
   "devDependencies": {
     "gh-pages": "^6.0.0",
-    "prettier": "3.8.1",
+    "prettier": "2.8.8",
     "sass": "^1.69.0",
     "sharp": "^0.34.4",
     "vite": "^4.5.3"
