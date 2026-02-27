@@ -1,3 +1,5 @@
+@use '../variables';
+
 //add tasks
 @keyframes slideIn {
     from {
@@ -10,10 +12,6 @@
     }
 }
 
-// .todo-item {
-//     // animation: slideIn 0.3s ease-out;
-// }
-
 // del tasks
 .todo-item.removing {
     animation: slideOut 0.3s ease-in forwards;
@@ -25,6 +23,7 @@
         transform: translateX(100px);
     }
 }
+
 //status swich
 .todo-item__text {
     transition: all 0.3s ease;
@@ -36,28 +35,6 @@
     // transform: scale(0.95);
     transition: all 0.3s ease;
 }
-//checkbox
-// .todo-item__checkbox-input {
-//     transition: transform 0.2s ease, box-shadow 0.2s ease;
-// }
-
-// .todo-item__checkbox-input:checked {
-//     transform: scale(1.1);
-//     box-shadow: 0 0 10px var(--accent-color);
-// }
-
-// .todo-item__checkbox-input:checked::after {
-//     content: '✓';
-//     animation: popIn 0.2s ease;
-// }
-
-// @keyframes popIn {
-//     0% { transform: scale(0); }
-//     80% { transform: scale(1.2); }
-//     100% { transform: scale(1); }
-// }
-
-
 
 //button
 .todo-filter, .todo-clear {

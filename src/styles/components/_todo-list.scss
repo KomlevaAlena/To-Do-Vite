@@ -1,17 +1,23 @@
+@use '../variables';
+
 .todo-list {
-  margin-top: 2rem;
+  margin-top: variables.$spacing-md;
 }
 
 .todo-list__container {
   background: var(--bg-primary);
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: variables.$border-radius-md;
+  padding: variables.$spacing-sm;
   min-height: 200px;
   transition: background 0.3s ease;
   
   &.drag-over {
     border: 2px dashed var(--accent-color);
     background: var(--bg-secondary);
+  }
+
+  .todo-item {
+    transition: all 0.3s ease;
   }
 }
 
@@ -21,10 +27,4 @@
   padding: 3rem 1rem;
   font-size: 1.1rem;
   animation: pulse 2s infinite;
-}
-
-.todo-list__container {
-  .todo-item {
-    transition: all 0.3s ease;
-  }
 }

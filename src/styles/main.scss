@@ -1,17 +1,18 @@
-@import 'variables';
+@use 'variables' as *;
 
 //Темы
-@import 'utilities/themes';
+@use 'utilities/themes';
 
 // Базовые стили
-@import 'base/reset';
+@use 'base/reset';
 
 // Компоненты
-@import 'components/todo-app';
-@import 'components/todo-input';
-@import 'components/todo-list';
-@import 'components/todo-item';
-@import 'components/todo-counters';
-@import 'components/todo-filters';
-@import 'components/animation';
-@import 'components/ui/theme-toggle';
+@use 'components/todo-app';
+@use 'components/todo-input';
+@use 'components/todo-list';
+@use 'components/todo-item';
+@use 'components/todo-counters';
+@use 'components/todo-filters';
+@use 'components/animation';
+@use 'components/ui/theme-toggle';
+@use 'components/ui/keyboard-hint';

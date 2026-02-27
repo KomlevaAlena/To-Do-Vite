@@ -94,7 +94,7 @@ class TodoView {
   textSpan.addEventListener('dblclick', (event) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log('✏️ Двойной клик по задаче с id:', todo.id);
+    console.log('🔥🔥🔥 ДВОЙНОЙ КЛИК СРАБОТАЛ! Задача:', todo.id);
     // Вызываем метод для создания редактора
     this.createInlineEditor(textSpan, todo);
   });

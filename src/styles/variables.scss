@@ -1,14 +1,14 @@
-// Цвета
-$primary-color: #2c3e50;
-$secondary-color: #34495e;
-$accent-color: #3498db;
-$background-color: #f8f9fa;
-$text-color: #333;
-$muted-color: #666;
 
 // Шрифты
 $font-family: 'Arial', 'Helvetica', sans-serif;
+
+// Размеры шрифтов
 $font-size-base: 16px;
+$font-size-sm: 14px;      // ← ДОБАВЬ ЭТО
+$font-size-xs: 12px;      // ← ДОБАВЬ ЭТО (если нужно)
+$font-size-lg: 18px;      // ← ДОБАВЬ ЭТО (если нужно)
+$font-size-xl: 20px;      // ← ДОБАВЬ ЭТО (если нужно)
+$font-size-empty: 1.1rem;
 
 // Отступы
 $spacing-xs: 0.5rem;
@@ -18,5 +18,47 @@ $spacing-lg: 4rem;
 
 // Breakpoints
 $mobile: 768px;
+$mobile-small: 480px;
 $tablet: 1024px;
 $desktop: 1200px;
+
+// Радиусы
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+
+// Разрывы (gap)
+$gap-sm: 8px;
+$gap-md: 10px; 
+$gap-lg: 16px;
+
+// Высоты
+$min-height-container: 200px;  // для .todo-list__container
+
+// Отступы
+$padding-empty: 3rem 1rem;     // для пустого списка
+
+// Размеры шрифтов
+$font-size-empty: 1.1rem;      // для текста пустого списка
+
+// Отступы и размеры для фильтров
+$gap-filters: 12px;           // ← gap между кнопками
+$padding-filters: 12px;       // ← внутренний отступ контейнера
+$padding-filter-button: 10px 20px;  // ← отступы кнопок
+$border-radius-filter: 6px;   // ← радиус кнопок
+$margin-bottom-filters: 1.5rem;  // ← отступ снизу
+
+// Размеры
+$emoji-size: 16px;            // ← размер эмодзи
+$emoji-margin: 6px;           // ← отступ эмодзи от текста
+
+// Отступы для счётчиков
+$gap-counters: 20px;           // ← расстояние между счётчиками
+$padding-counters: 12px 16px;  // ← внутренние отступы
+$margin-bottom-counters: 1.5rem;  // ← отступ снизу
+
+// Цвета (если хочешь вынести специальные цвета)
+$color-completed: #2ecc71;     // зелёный для выполненных
+$color-active: #3498db;        // синий для активных
+
+// color: $primary-color; пример использования с юз

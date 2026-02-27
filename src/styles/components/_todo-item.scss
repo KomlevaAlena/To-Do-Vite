@@ -1,10 +1,12 @@
+@use '../variables';
+
 .todo-item {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   padding: 12px 16px;
   background: var(--todo-bg);
-  border-radius: 8px;
+  border-radius: variables.$border-radius-md;
   margin-bottom: 8px;
   border-left: 4px solid var(--border-color);
   
@@ -40,7 +42,7 @@
 }
 
 .todo-item__text {
-  font-size: 16px;
+  font-size: variables.$font-size-base;
   color: var(--text-primary);
   word-break: break-word; // ← Переносим длинные слова
   overflow-wrap: break-word; // ← Альтернативный перенос
@@ -56,7 +58,7 @@
   cursor: pointer;
   font-size: 18px;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: variables.$border-radius-sm;
   align-self: flex-start; // ← Выравниваем кнопку по верху
   
   &:hover {
@@ -91,7 +93,7 @@
     background: var(--accent-color);
     color: var(--bg-primary);
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: variables.$border-radius-sm;
     font-size: 12px;
     opacity: 0.8;
     pointer-events: none; /* Чтобы не мешала кликам */
@@ -108,9 +110,12 @@
 }
 
 /* Элементы, которые НЕ должны мешать drag & drop */
-.todo-item__checkbox,
-.todo-item__content {
+.todo-item__checkbox {
     pointer-events: none;
+}
+.todo-item__text {
+    pointer-events: auto;  // ← ДОБАВЛЯЕМ ЭТО
+    cursor: text;  // ← Чтобы показать, что текст можно редактировать
 }
 
 /* Кнопки ДОЛЖНЫ работать */
