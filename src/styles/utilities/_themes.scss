@@ -1,4 +1,6 @@
 // _themes.scss - переменные для тем
+// _themes.scss
+@use '../variables' as *;
 
 // Светлая тема (по умолчанию)
 :root {
@@ -15,6 +17,7 @@
     --shadow-color: rgba(0, 0, 0, 0.1);
     --todo-bg: #ffffff;
     --todo-hover: #f8f9fa;
+    --font-family: $font-family;
 }
 
 // Тёмная тема
@@ -32,4 +35,5 @@
     --shadow-color: rgba(0, 0, 0, 0.3);
     --todo-bg: #2d2d2d;
     --todo-hover: #3d3d3d;
+    --font-family: $font-family;
 }

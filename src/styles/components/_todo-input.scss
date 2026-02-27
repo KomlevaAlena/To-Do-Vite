@@ -1,7 +1,9 @@
+@use '../variables';
+
 .todo-input__form {
   display: flex;
   gap: 10px;
-  margin-bottom: 2rem;
+  margin-bottom: variables.$spacing-md;
 
   @media (max-width: 480px) {
     flex-direction: column;

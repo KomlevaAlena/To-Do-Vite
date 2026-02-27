@@ -1,10 +1,12 @@
+@use '../variables';
+
 .todo-filters {
   display: flex;
   gap: 12px; // ← расстояние между кнопками
   margin-bottom: 1.5rem;
   padding: 12px;
   background: var(--bg-secondary);
-  border-radius: 8px;
+  border-radius: variables.$border-radius-md;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -16,7 +18,7 @@
   border: 2px solid var(--border-color);
   border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: variables.$font-size-sm;
   font-weight: 500;
   color: var(--text-secondary);
   transition: all 0.3s;
@@ -45,7 +47,7 @@
   
   // Эмодзи немного больше
   &::before {
-    font-size: 16px;
+    font-size: variables.$font-size-base;
     margin-right: 6px;
   }
 }
