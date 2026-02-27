@@ -108,9 +108,12 @@
 }
 
 /* Элементы, которые НЕ должны мешать drag & drop */
-.todo-item__checkbox,
-.todo-item__content {
+.todo-item__checkbox {
     pointer-events: none;
+}
+.todo-item__text {
+    pointer-events: auto;  // ← ДОБАВЛЯЕМ ЭТО
+    cursor: text;  // ← Чтобы показать, что текст можно редактировать
 }
 
 /* Кнопки ДОЛЖНЫ работать */
