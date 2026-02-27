@@ -22,21 +22,21 @@
   font-weight: 500;
   color: var(--text-secondary);
   transition: all 0.3s;
-  
+
   &:hover {
     border-color: var(--accent-color);
     color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px var(--shadow-color);
   }
-  
+
   // Стиль для активной кнопки
   &--active {
     background: var(--accent-color);
     border-color: var(--accent-color);
     color: var(--bg-primary);
     font-weight: 600;
-    
+
     &:hover {
       background: var(--accent-color);
       border-color: var(--accent-color);
@@ -44,7 +44,7 @@
       box-shadow: none;
     }
   }
-  
+
   // Эмодзи немного больше
   &::before {
     font-size: variables.$font-size-base;

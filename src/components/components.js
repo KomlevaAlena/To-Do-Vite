@@ -48,7 +48,7 @@ export const components = {
     <div data-component="todo-list"></div>
   </div>
 `,
-  
+
   'todo-input': `
     <div class="todo-input">
       <form class="todo-input__form">
@@ -59,7 +59,7 @@ export const components = {
       </form>
     </div>
   `,
-  
+
   'todo-list': `
     <div class="todo-list">
       <div class="todo-list__container">
@@ -68,5 +68,5 @@ export const components = {
         </div>
       </div>
     </div>
-  `
+  `,
 };

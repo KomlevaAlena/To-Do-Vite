@@ -32,7 +32,7 @@ setTimeout(() => {
   console.log('=== ОТЛАДКА ЧЕРЕЗ 2 СЕКУНДЫ ===');
   console.log('todoController:', todoController);
   console.log('Есть ли метод init?', todoController?.init);
-  
+
   if (todoController && todoController.init) {
     console.log('Пробую запустить вручную...');
     todoController.init();

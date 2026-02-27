@@ -13,18 +13,18 @@
 .todo-counter {
   font-size: variables.$font-size-sm;
   color: var(--text-secondary);
-  
+
   .todo-counter__value {
     font-weight: bold;
     color: var(--text-primary);
     transition: transform 0.2s ease;
   }
-  
-  &[data-counter="completed"] .todo-counter__value {
+
+  &[data-counter='completed'] .todo-counter__value {
     color: #2ecc71;
   }
-  
-  &[data-counter="active"] .todo-counter__value {
+
+  &[data-counter='active'] .todo-counter__value {
     color: #3498db;
   }
 }
