@@ -6,6 +6,11 @@ export const components = {
     <button class="theme-toggle" title="Переключить тему">
       🌙 Темная тема
     </button>
+
+    <!-- Подсказка по клавишам -->
+    <div class="keyboard-hint">
+      ⌨️ Нажми ? для справки
+    </div>
     
     <!-- Счётчики задач -->
     <div class="todo-counters">

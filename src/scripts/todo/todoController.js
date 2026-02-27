@@ -12,6 +12,8 @@ class TodoController {
 
     this.currentTheme = localStorage.getItem('todoApp_theme') || 'light';
 
+    this.setupKeyboardShortcuts();
+
     // Временно для отладки
     window.todoController = this;
     window.todoModel = todoModel;
@@ -352,6 +354,56 @@ class TodoController {
         localStorage.setItem('todoApp_theme', this.currentTheme);
         console.log('🎨 Тема переключена на:', this.currentTheme);
     }
+
+    setupKeyboardShortcuts() {
+        document.addEventListener('keydown', (event) => {
+            if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') { // Игнорируем, если пользователь печатает в поле ввода
+                return;
+            }
+            console.log('⌨️ Нажата клавиша:', event.key);
+
+            switch(event.key) {
+                case '1':
+                    console.log('📋 Горячая клавиша: Все задачи');
+                    this.handleFilterChange('all');
+                    break;
+                case '2':
+                    console.log('⏳ Горячая клавиша: Активные');
+                    this.handleFilterChange('active');
+                    break;
+                case '3':
+                    console.log('✅ Горячая клавиша: Выполненные');
+                    this.handleFilterChange('completed');
+                    break;
+                case '?':
+                case '/':
+                    event.preventDefault();
+                    this.showKeyboardHelp();
+                    break;
+                case 'Escape':
+                    console.log('🔚 Escape нажат');// Escape уже обрабатывается в редактировании
+                    break;
+                default:// Ничего не делаем
+                break;
+            }
+        });
+        console.log('⌨️ Клавиатурные сокращения настроены');
+    }
+    // Показать справку
+    showKeyboardHelp() {
+        const helpMessage = `
+            ⌨️ Клавиатурные сокращения:
+            
+            1 - Показать все задачи
+            2 - Показать активные задачи
+            3 - Показать выполненные задачи
+            Esc - Отменить редактирование
+            ? - Показать эту справку
+        `;
+        
+        alert(helpMessage); // Можно заменить на красивое модальное окно
+    }
+    
 }
 
 const todoController = new TodoController(); // Создаём экземпляр (объект) нашего контроллера
