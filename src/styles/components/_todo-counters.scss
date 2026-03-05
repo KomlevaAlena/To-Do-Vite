@@ -7,7 +7,7 @@
   padding: 12px 16px;
   background: var(--bg-secondary);
   border-radius: variables.$border-radius-md;
-  flex-wrap: wrap; // ← Переносим на новую строку если не помещается
+  flex-wrap: wrap;
 }
 
 .todo-counter {
@@ -21,10 +21,10 @@
   }
 
   &[data-counter='completed'] .todo-counter__value {
-    color: #2ecc71;
+    color: variables.$color-completed;
   }
 
   &[data-counter='active'] .todo-counter__value {
-    color: #3498db;
+    color: variables.$color-active;
   }
 }

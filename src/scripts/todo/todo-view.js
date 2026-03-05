@@ -436,10 +436,10 @@ class TodoView {
     if (clearButton) {
       clearButton.disabled = counters.completed === 0;
       if (counters.completed === 0) {
-        clearButton.classList.add('todo-clear--disabled'); // ← ЭТА СТРОКА ПРАВИЛЬНАЯ
+        clearButton.classList.add('todo-clear--disabled');
         clearButton.textContent = '🧹 Очистить выполненные';
       } else {
-        clearButton.classList.remove('todo-clear--disabled'); // ← И ЭТА ТОЖЕ
+        clearButton.classList.remove('todo-clear--disabled');
         clearButton.textContent = `🧹 Очистить выполненные (${counters.completed})`;
       }
     }

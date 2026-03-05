@@ -89,7 +89,6 @@ class TodoController {
     // Устанавливаем колбэк для удаления в представлении
     todoView.setOnDeleteCallback(this.handleDeleteTodo.bind(this)); // bind создаёт новую функцию, где this всегда = текущий объект
     todoView.setOnToggleCallback(this.handleToggleTodo.bind(this)); // В методе setupEventListeners() добавляем установку колбэка:
-    // todoView.setOnFilterCallback(this.handleFilterChange.bind(this)); // ← новое! добавляем установку колбэка
     todoView.setOnCopyCallback(this.handleCopyTodo.bind(this)); // Устанавливаем колбэк для копирования
     todoView.setOnEditCallback(this.handlerEditTodo.bind(this)); // Устанавливаем колбэк для редактирования
     todoView.setOnDragDropCallback(this.handleDragDrop.bind(this)); // Устанавливаем колбэк для drag & drop
@@ -218,9 +217,6 @@ class TodoController {
 
     if (isFilterSet) {
       console.log('✅ Фильтр установлен в модели');
-
-      // Обновляем активную кнопку в представлении
-      // todoView.updateActiveFilter(filter);
 
       // Обновляем отображение задач
       this.updateUI(); // ← ЭТА СТРОКА ВЫЗОВЕТ updateActiveFilter() САМА

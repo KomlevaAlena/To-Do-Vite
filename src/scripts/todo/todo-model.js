@@ -170,19 +170,6 @@ class TodoModel {
     return false;
   }
 
-  // Получить отфильтрованные задачи
-  // getFilteredTodos() {
-  //   switch (this.currentFilter) {
-  //     case 'active':
-  //       return this.todos.filter(todo => !todo.completed);
-  //     case 'complited':
-  //       return this.todos.filter(todo => todo.completed);
-  //     case 'all':
-  //       default:
-  //       return [...this.todos];// возвращаем копию
-  //   }
-  // }
-
   setFilter(filter) {
     console.log('🔥 setFilter вызван с:', filter);
     console.log('🔥 Текущий фильтр до:', this.currentFilter);
@@ -274,36 +261,6 @@ class TodoModel {
     console.log('✅ Текст изменён с "' + oldText + '" на "' + todo.text + '"');
     return true;
   }
-
-  //   moveTodo(draggedId, targetId) {
-  //     console.log('📦 Перемещаю задачу', draggedId, 'на место', targetId);
-
-  //     // Находим индексы задач
-  //     const draggedIndex = this.todos.findIndex(t => t.id === draggedId);
-  //     const targetIndex = this.todos.findIndex(t => t.id === targetId);
-
-  //     // Если не нашли какую-то задачу — ошибка
-  //     if (draggedIndex === -1 || targetIndex === -1) {
-  //         console.log('❌ Задачи не найдены');
-  //         return false;
-  //     }
-
-  //     // Вырезаем перетаскиваемую задачу из массива
-  //     const [draggedTodo] = this.todos.splice(draggedIndex, 1);
-
-  //     // Определяем новый индекс для вставки
-  //     // Если draggedIndex был меньше targetIndex, то после удаления targetIndex уменьшается на 1
-  //     const newTargetIndex = draggedIndex < targetIndex ? targetIndex - 1 : targetIndex;
-
-  //     // Вставляем задачу на новое место
-  //     this.todos.splice(newTargetIndex, 0, draggedTodo); // ← БЫЛО slice, СТАЛО splice!
-
-  //     // Сохраняем в localStorage
-  //     this.saveToLocalStorage();
-
-  //     console.log('✅ Порядок задач изменён. Теперь задачи:', this.todos.map(t => t.id));
-  //     return true;
-  // }
   moveTodo(draggedId, targetId) {
     console.log('📦 Перемещаю задачу', draggedId, 'на место', targetId);
 
@@ -337,10 +294,6 @@ class TodoModel {
   }
 }
 
-// if (typeof window !== 'undefined') {
-//   window.todoModel = todoModel;
-//   console.log('🔧 todoModel добавлена в window для отладки');
-// }
 // Экспортируем экземпляр модели (синглтон) Создаем один экземпляр (объект) модели "синглтон" - только один экземпляр на всё приложение
 export const todoModel = new TodoModel();
 // Временная отладка - ПОСЛЕ export!

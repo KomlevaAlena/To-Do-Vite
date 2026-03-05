@@ -13,8 +13,9 @@
   &:hover {
     background: var(--todo-hover);
   }
+
   &--completed {
-    border-left-color: #2ecc71;
+    border-left-color: variables.$color-completed;
 
     .todo-item__content {
       text-decoration: line-through;
@@ -25,7 +26,7 @@
 
 .todo-item__checkbox {
   flex-shrink: 0;
-  margin-top: 2px; // ← выравниваем чекбокс с текстом
+  margin-top: 2px; // выравниваем чекбокс с текстом
 }
 
 .todo-item__checkbox-input {
@@ -38,15 +39,15 @@
   flex-grow: 1;
   transition: all 0.3s;
   padding: 0 5px;
-  min-width: 0; // ← ВАЖНО! Позволяет элементу сжиматься
+  min-width: 0; // Позволяет элементу сжиматься
 }
 
 .todo-item__text {
   font-size: variables.$font-size-base;
   color: var(--text-primary);
-  word-break: break-word; // ← Переносим длинные слова
-  overflow-wrap: break-word; // ← Альтернативный перенос
-  line-height: 1.4; // ← Межстрочный интервал
+  word-break: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.4;
 }
 
 .todo-item__delete,
@@ -59,7 +60,7 @@
   font-size: 18px;
   padding: 4px 8px;
   border-radius: variables.$border-radius-sm;
-  align-self: flex-start; // ← Выравниваем кнопку по верху
+  align-self: flex-start; // Выравниваем кнопку по верху
 
   &:hover {
     background: var(--bg-secondary);
@@ -74,7 +75,7 @@
   box-shadow: 0 5px 15px var(--shadow-color);
 }
 
-/* Когда мышь над задачей, куда можно бросить - ЕДИНСТВЕННОЕ ОПРЕДЕЛЕНИЕ! */
+/* Когда мышь над задачей, куда можно бросить */
 .todo-item--drag-over {
   border: 2px dashed var(--border-color) !important;
   background: var(--bg-secondary) !important;
@@ -96,7 +97,8 @@
   border-radius: variables.$border-radius-sm;
   font-size: 12px;
   opacity: 0.8;
-  pointer-events: none; /* Чтобы не мешала кликам */
+  pointer-events: none;
+  /* Чтобы не мешала кликам */
 }
 
 /* Для верхней части задачи */
@@ -109,25 +111,25 @@
   border-bottom: 3px solid var(--border-color) !important;
 }
 
-/* Элементы, которые НЕ должны мешать drag & drop */
+/*НЕ  мешать drag & drop */
 .todo-item__checkbox {
   pointer-events: none;
 }
+
 .todo-item__text {
-  pointer-events: auto; // ← ДОБАВЛЯЕМ ЭТО
-  cursor: text; // ← Чтобы показать, что текст можно редактировать
+  pointer-events: auto;
+  cursor: text; // текст можно редактировать
 }
 
-/* Кнопки ДОЛЖНЫ работать */
 .todo-item__copy,
 .todo-item__delete {
-  pointer-events: auto; /* ← ВКЛЮЧАЕМ ОБРАТНО */
-  cursor: pointer; /* Добавляем указатель для красоты */
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .todo-item__copy:hover,
 .todo-item__delete:hover {
-  transform: scale(1.1); /* Небольшой эффект при наведении */
+  transform: scale(1.1);
   transition: transform 0.2s ease;
 }
 
@@ -154,10 +156,12 @@
 
 /* Анимация для стрелки */
 @keyframes bounce {
+
   0%,
   100% {
     transform: translateY(-50%) translateX(0);
   }
+
   50% {
     transform: translateY(-50%) translateX(5px);
   }

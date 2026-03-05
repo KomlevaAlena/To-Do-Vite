@@ -2,7 +2,7 @@
 
 .todo-filters {
   display: flex;
-  gap: 12px; // ← расстояние между кнопками
+  gap: 12px; // расстояние между кнопками
   margin-bottom: 1.5rem;
   padding: 12px;
   background: var(--bg-secondary);
@@ -45,7 +45,7 @@
     }
   }
 
-  // Эмодзи немного больше
+  // Эмодзи
   &::before {
     font-size: variables.$font-size-base;
     margin-right: 6px;
@@ -82,10 +82,9 @@
   color: var(--accent-color) !important;
 }
 
-/* Стили для кнопки очистки (если захочешь сделать её особенной) */
+/* Стили для кнопки очистки */
 .todo-clear {
-  /* Твои существующие стили */
-  border: 2px solid var(--danger-color); /* Красная рамка для выделения */
+  border: 2px solid var(--danger-color);
   color: var(--danger-color);
 }
 
@@ -96,7 +95,6 @@
 }
 
 .todo-clear--active {
-  /* Если захочешь сделать активное состояние для кнопки очистки */
   background: var(--danger-color);
   color: var(--bg-primary);
   border-color: var(--danger-color);

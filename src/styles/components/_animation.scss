@@ -6,6 +6,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -32,7 +33,6 @@
 .todo-item--completed .todo-item__text {
   text-decoration: line-through;
   color: var(--text-secondary);
-  // transform: scale(0.95);
   transition: all 0.3s ease;
 }
 
@@ -53,6 +53,7 @@
   transform: translateY(0);
   transition: all 0.1s;
 }
+
 //counter
 .todo-counter__value {
   display: inline-block;
@@ -63,6 +64,7 @@
   transform: scale(1.2);
   color: var(--accent-color);
 }
+
 //filter
 .todo-filter--active {
   position: relative;
@@ -84,10 +86,12 @@
   from {
     transform: translateX(-100%);
   }
+
   to {
     transform: translateX(0);
   }
 }
+
 //drag and drop
 .todo-item {
   transition:
@@ -107,17 +111,20 @@
   transform: scale(1.02);
   transition: all 0.2s ease;
 }
+
 //empty list
 .todo-list__empty {
   animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 0.8;
     transform: scale(1);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.02);
