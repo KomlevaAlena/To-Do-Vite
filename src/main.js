@@ -9,10 +9,6 @@ console.log('✅ SCSS styles imported');
 import './scripts/simple-components-loader.js';
 console.log('✅ Components loader imported');
 
-// Импортируем SVG loader
-// import './scripts/svg-sprite-loader.js';
-// console.log('✅ SVG loader imported');
-
 console.log('🚀 All modules loaded - waiting for components...');
 
 // Импортируем компоненты для проверки
@@ -32,7 +28,7 @@ setTimeout(() => {
   console.log('=== ОТЛАДКА ЧЕРЕЗ 2 СЕКУНДЫ ===');
   console.log('todoController:', todoController);
   console.log('Есть ли метод init?', todoController?.init);
-  
+
   if (todoController && todoController.init) {
     console.log('Пробую запустить вручную...');
     todoController.init();

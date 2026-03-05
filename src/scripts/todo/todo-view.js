@@ -2,10 +2,10 @@
 class TodoView {
   constructor() {
     console.log('👁️ Представление создано');
-    
+
     // НЕ ищем элемент сразу - он может быть ещё не загружен
     this.todoListContainer = null;
-    this.onDeleteCallback = null;// Колбэк для удаления
+    this.onDeleteCallback = null; // Колбэк для удаления
     this.onToggleCallback = null; // ← новое поле для чекбоксов
     this.onFilterCallback = null; // ← новое поле для колбэка фильтрации
     this.onCopyCallback = null;
@@ -50,7 +50,7 @@ class TodoView {
     if (!this.todoListContainer) {
       console.log('🔍 Ищу контейнер для списка задач...');
       this.todoListContainer = document.querySelector('.todo-list__container');
-      
+
       if (this.todoListContainer) {
         console.log('✅ Контейнер найден:', this.todoListContainer);
       } else {
@@ -67,11 +67,10 @@ class TodoView {
     todoItem.className = 'todo-item';
     todoItem.draggable = true; // Разрешаем тащить эту задачу
     todoItem.dataset.id = todo.id; // Сохраняем id в data-атрибут
-    
 
     // Определяем класс для выполненной задачи
     const completedClass = todo.completed ? 'todo-item--completed' : '';
-    
+
     // Заполняем HTML
     todoItem.innerHTML = `
     <div class="todo-item__checkbox">
@@ -89,206 +88,79 @@ class TodoView {
     <button class="todo-item__delete" data-action="delete" title="Удалить задачу">🗑️</button>
   `;
 
-  // Добавляем обработчик двойного клика
-  const textSpan = todoItem.querySelector('.todo-item__text');
-  textSpan.addEventListener('dblclick', (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    console.log('🔥🔥🔥 ДВОЙНОЙ КЛИК СРАБОТАЛ! Задача:', todo.id);
-    // Вызываем метод для создания редактора
-    this.createInlineEditor(textSpan, todo);
-  });
+    // Добавляем обработчик двойного клика
+    const textSpan = todoItem.querySelector('.todo-item__text');
+    textSpan.addEventListener('dblclick', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      console.log('🔥🔥🔥 ДВОЙНОЙ КЛИК СРАБОТАЛ! Задача:', todo.id);
+      // Вызываем метод для создания редактора
+      this.createInlineEditor(textSpan, todo);
+    });
     return todoItem;
   }
 
-// addDragDropHandlers() {
-//     console.log('🎯 Добавляю drag & drop обработчики');
-    
-//     // Находим все задачи на странице
-//     const todoItems = document.querySelectorAll('.todo-item');
-//     console.log('Найдено задач для drag & drop:', todoItems.length);
-
-//     // Перебираем каждую задачу
-//     todoItems.forEach(item => {
-//         // ------------------------------------------------------------
-//         // 1. Когда НАЧИНАЕМ тащить задачу
-//         // ------------------------------------------------------------
-//         item.addEventListener('dragstart', (event) => {
-//             console.log('🟢 dragstart на задаче', item.dataset.id);
-            
-//             // Сохраняем id задачи
-//             event.dataTransfer.setData('text/plain', item.dataset.id);
-//             event.dataTransfer.effectAllowed = 'move'; // Говорим, что будем перемещать
-            
-//             // Добавляем класс для стилей
-//             item.classList.add('todo-item--dragging');
-//         });
-
-//         // ------------------------------------------------------------
-//         // 2. Когда ЗАКОНЧИЛИ тащить
-//         // ------------------------------------------------------------
-//         item.addEventListener('dragend', (event) => {
-//             console.log('🔴 dragend на задаче', item.dataset.id);
-            
-//             // Убираем класс стилей
-//             item.classList.remove('todo-item--dragging');
-            
-//             // Убираем подсветку со ВСЕХ задач
-//             document.querySelectorAll('.todo-item').forEach(i => {
-//                 i.classList.remove('todo-item--drag-over');
-//             });
-//         });
-
-//         // ------------------------------------------------------------
-//         // 3. Когда тащим НАД задачей (dragover) - САМОЕ ВАЖНОЕ!
-//         // ------------------------------------------------------------
-//         item.addEventListener('dragover', (event) => {
-//             event.preventDefault();
-//             event.dataTransfer.dropEffect = 'move';
-            
-//             const rect = item.getBoundingClientRect();
-//             const mouseY = event.clientY;
-//             const midPoint = rect.top + rect.height / 2;
-            
-//             // Определяем, выше или ниже середины мышь
-//             if (mouseY < midPoint) {
-//                 console.log('🟡 dragover над верхней частью задачи', item.dataset.id);
-//                 item.classList.add('todo-item--drag-over-top');
-//                 item.classList.remove('todo-item--drag-over-bottom');
-//             } else {
-//                 console.log('🟡 dragover над нижней частью задачи', item.dataset.id);
-//                 item.classList.add('todo-item--drag-over-bottom');
-//                 item.classList.remove('todo-item--drag-over-top');
-//             }
-//         });
-
-//         // ------------------------------------------------------------
-//         // 4. Когда уводим мышь с задачи
-//         // ------------------------------------------------------------
-//         item.addEventListener('dragleave', (event) => {
-//             console.log('⚪ dragleave с задачи', item.dataset.id);
-            
-//             // Убираем подсветку
-//             item.classList.remove('todo-item--drag-over');
-//         });
-
-//         // 5. Когда БРОСАЕМ задачу на эту задачу (drop)
-//         item.addEventListener('drop', (event) => {
-//             event.preventDefault();
-//             event.stopPropagation();
-            
-//             console.log('🟢 drop на задачу', item.dataset.id);
-            
-//             // Убираем подсветку
-//             item.classList.remove('todo-item--drag-over');
-            
-//             // Получаем id перетаскиваемой задачи
-//             const draggedId = parseInt(event.dataTransfer.getData('text/plain'));
-//             const targetId = parseInt(item.dataset.id);
-            
-//             console.log('🎯 Перемещаем задачу', draggedId, 'на место', targetId);
-            
-//             // Вызываем колбэк
-//             if (this.onDragDropCallback) {
-//                 console.log('📞 Вызываю колбэк с параметрами:', draggedId, targetId);
-//                 this.onDragDropCallback(draggedId, targetId);
-//             } else {
-//                 console.warn('⚠️ Нет колбэка для drag & drop');
-//             }
-//         });
-//     });
-//     const container = this.findContainer();
-//     if (container) {
-//         container.addEventListener('dragover', (e) => {
-//             e.preventDefault();
-//             console.log('📦 CONTAINER dragover');
-//             container.classList.add('drag-over');
-//         });
-        
-//         container.addEventListener('dragleave', () => {
-//             container.classList.remove('drag-over');
-//         });
-        
-//         container.addEventListener('drop', (e) => {
-//             e.preventDefault();
-//             console.log('🔥🔥🔥 CONTAINER DROP');
-//             container.classList.remove('drag-over');
-            
-//             // Если бросили на контейнер (не на задачу)
-//             const draggedId = parseInt(e.dataTransfer.getData('text/plain'));
-//             if (draggedId && this.onDragDropCallback) {
-//                 // Вставляем в конец списка
-//                 const lastTodo = document.querySelector('.todo-item:last-child');
-//                 if (lastTodo) {
-//                     const lastId = parseInt(lastTodo.dataset.id);
-//                     this.onDragDropCallback(draggedId, lastId);
-//                 }
-//             }
-//         });
-//     }
-// }
-
-addDragDropHandlers() {
+  addDragDropHandlers() {
     console.log('🎯 Добавляю drag & drop обработчики (УПРОЩЁННО)');
-    
+
     const todoItems = document.querySelectorAll('.todo-item');
     console.log('Найдено задач:', todoItems.length);
-    
-    todoItems.forEach(item => {
-        // dragstart
-        item.addEventListener('dragstart', (e) => {
-            console.log('🟢 DRAGSTART', item.dataset.id);
-            e.dataTransfer.setData('text/plain', item.dataset.id);
-            e.dataTransfer.effectAllowed = 'move';
-        });
-        
-        // dragover - ОБЯЗАТЕЛЬНО!
-        item.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            console.log('🟡 DRAGOVER НАД', item.dataset.id);
-        });
-        
-        // drop
-        item.addEventListener('drop', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('🔥🔥🔥 DROP НА', item.dataset.id);
-            
-            const draggedId = parseInt(e.dataTransfer.getData('text/plain'));
-            const targetId = parseInt(item.dataset.id);
-            
-            console.log('Перемещаем', draggedId, '→', targetId);
-            
-            // ВЫЗЫВАЕМ КОЛБЭК!
-            if (this.onDragDropCallback) {
-                console.log('📞 Вызываю колбэк');
-                this.onDragDropCallback(draggedId, targetId);
-            }
-        });
+
+    todoItems.forEach((item) => {
+      // dragstart
+      item.addEventListener('dragstart', (e) => {
+        console.log('🟢 DRAGSTART', item.dataset.id);
+        e.dataTransfer.setData('text/plain', item.dataset.id);
+        e.dataTransfer.effectAllowed = 'move';
+      });
+
+      // dragover - ОБЯЗАТЕЛЬНО!
+      item.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        console.log('🟡 DRAGOVER НАД', item.dataset.id);
+      });
+
+      // drop
+      item.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('🔥🔥🔥 DROP НА', item.dataset.id);
+
+        const draggedId = parseInt(e.dataTransfer.getData('text/plain'));
+        const targetId = parseInt(item.dataset.id);
+
+        console.log('Перемещаем', draggedId, '→', targetId);
+
+        // ВЫЗЫВАЕМ КОЛБЭК!
+        if (this.onDragDropCallback) {
+          console.log('📞 Вызываю колбэк');
+          this.onDragDropCallback(draggedId, targetId);
+        }
+      });
     });
-}
+  }
   // Защита от XSS - экранирование HTML
- 
+
   escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text; // textContent не интерпретирует HTML
-    return div.innerHTML;   // innerHTML вернет экранированный текст
+    return div.innerHTML; // innerHTML вернет экранированный текст
   }
 
   // Показать все задачи
   renderTodos(todos) {
     console.log('🎨 Отрисовываю задачи:', todos);
-    
+
     // Находим контейнер (если ещё не нашли)
     const container = this.findContainer();
-    
+
     // Если контейнер не найден - выходим
     if (!container) {
       console.error('❌ Не могу отрисовать задачи: контейнер не найден');
       return;
     }
-    
+
     // Очищаем контейнер
     container.innerHTML = '';
 
@@ -302,11 +174,11 @@ addDragDropHandlers() {
     }
 
     // Для каждой задачи создаём элемент и добавляем в контейнер
-    todos.forEach(todo => {
+    todos.forEach((todo) => {
       const todoElement = this.createTodoItem(todo);
       container.appendChild(todoElement);
     });
-    
+
     console.log('✅ Задачи отрисованы');
     // Добавляем обработчики событий на ВСЕ элементы
     this.addEventHandlers();
@@ -316,27 +188,27 @@ addDragDropHandlers() {
     // Находим все кнопки удаления
     const deleteButtons = document.querySelectorAll('.todo-item__delete');
     // Для каждой кнопки добавляем обработчик
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            // Предотвращаем всплытие события
-            event.stopPropagation();
-            // Находим родительский элемент (саму задачу)
-            const todoItem = button.closest('.todo-item');
-            // Получаем id задачи из data-атрибута
-            const todoId = parseInt(todoItem.dataset.id);
+    deleteButtons.forEach((button) => {
+      button.addEventListener('click', (event) => {
+        // Предотвращаем всплытие события
+        event.stopPropagation();
+        // Находим родительский элемент (саму задачу)
+        const todoItem = button.closest('.todo-item');
+        // Получаем id задачи из data-атрибута
+        const todoId = parseInt(todoItem.dataset.id);
 
-            console.log('🗑️ Пытаюсь удалить задачу с id:', todoId);
-            // Если есть колбэк - вызываем его
-            if (this.onDeleteCallback) {
-                this.onDeleteCallback(todoId);
-            } else {
-                console.warn('⚠️ Нет колбэка для удаления');
-                todoItem.remove();
-            }
-            // Здесь будем вызывать метод удаления из контроллера
-            // Пока просто удаляем элемент со страницы (временно)
-            console.log('✅ Задача удалена со страницы (временно)');
-        });
+        console.log('🗑️ Пытаюсь удалить задачу с id:', todoId);
+        // Если есть колбэк - вызываем его
+        if (this.onDeleteCallback) {
+          this.onDeleteCallback(todoId);
+        } else {
+          console.warn('⚠️ Нет колбэка для удаления');
+          todoItem.remove();
+        }
+        // Здесь будем вызывать метод удаления из контроллера
+        // Пока просто удаляем элемент со страницы (временно)
+        console.log('✅ Задача удалена со страницы (временно)');
+      });
     });
   }
   // Создать редактор прямо в строке
@@ -363,7 +235,7 @@ addDragDropHandlers() {
     const onBlur = () => {
       cleanup();
       this.saveEdit(input, todo.id, parentDiv);
-    }
+    };
     // Обработчик нажатия Enter
     const onKeyPress = (event) => {
       if (event.key === 'Enter') {
@@ -379,66 +251,49 @@ addDragDropHandlers() {
         cleanup();
         this.cancelEdit(input, originalText, parentDiv);
       }
-    }
+    };
     // 👇 ВОТ ТУТ МЫ ДОБАВЛЯЕМ НОВЫЕ ОБРАБОТЧИКИ 👇
     input.addEventListener('blur', onBlur);
     input.addEventListener('keypress', onKeyPress);
     input.addEventListener('keydown', onKeyDown);
-    
-    // // Обработчик потери фокуса (сохраняем)
-    // input.addEventListener('blur', () => {
-    //   this.saveEdit(input, todo.id, parentDiv);
-    // });
-    // // Обработчик нажатия Enter (сохраняем)
-    // input.addEventListener('keypress', (event) =>{
-    //   if (event.key === 'Enter') {
-    //     event.preventDefault();
-    //     this.saveEdit(input, todo.id, parentDiv);
-    //   }
-    // });
-    // // Обработчик Escape (отменяем)
-    // input.addEventListener('keydown', (event) => {
-    //   if (event.key === 'Escape') {
-    //     event.preventDefault();
-    //     this.cancelEdit(input, todo.id, parentDiv);
-    //   }
-    // });
   }
 
-    // Сохранить изменения
-    saveEdit(input, todoId, parentDiv) {
-      const newText = input.value.trim();
-      // Создаём span обратно
-      const newSpan = document.createElement('span');
-      newSpan.className = 'todo-item__text';
-      // Если пусто - отменяем
-      if (newText === '') {
-        newSpan.textContent = input.defaultValue;
-        parentDiv.replaceChild(newSpan, input);
-        return;
-      }
-      // Обновляем текст в span
-      newSpan.textContent = this.escapeHtml(newText);
+  // Сохранить изменения
+  saveEdit(input, todoId, parentDiv) {
+    const newText = input.value.trim();
+    // Создаём span обратно
+    const newSpan = document.createElement('span');
+    newSpan.className = 'todo-item__text';
+    // Если пусто - отменяем
+    if (newText === '') {
+      newSpan.textContent = input.defaultValue;
       parentDiv.replaceChild(newSpan, input);
-      // Вызываем колбэк для сохранения в модели
-      if(this.onEditCallback) {
-        this.onEditCallback(todoId, newText);
-      }
+      return;
     }
-    // Отменить редактирование
-    cancelEdit(input, originalText, parentDiv) {
-      const newSpan = document.createElement('span');
-      newSpan.className = 'todo-item__text';
-      newSpan.textContent = this.escapeHtml(originalText);
-      parentDiv.replaceChild(newSpan, input);
+    // Обновляем текст в span
+    newSpan.textContent = this.escapeHtml(newText);
+    parentDiv.replaceChild(newSpan, input);
+    // Вызываем колбэк для сохранения в модели
+    if (this.onEditCallback) {
+      this.onEditCallback(todoId, newText);
     }
+  }
+  // Отменить редактирование
+  cancelEdit(input, originalText, parentDiv) {
+    const newSpan = document.createElement('span');
+    newSpan.className = 'todo-item__text';
+    newSpan.textContent = this.escapeHtml(originalText);
+    parentDiv.replaceChild(newSpan, input);
+  }
 
   // Обновить счётчики задач
   updateCounters(counters) {
     console.log('📊 Обновляю счётчики:', counters);
     // Находим все элементы счётчиков
     const totalElement = document.querySelector('[data-counter="total"] .todo-counter__value');
-    const completedElement = document.querySelector('[data-counter="completed"] .todo-counter__value');
+    const completedElement = document.querySelector(
+      '[data-counter="completed"] .todo-counter__value'
+    );
     const activeElement = document.querySelector('[data-counter="active"] .todo-counter__value');
 
     // Проверяем, что элементы найдены
@@ -453,11 +308,11 @@ addDragDropHandlers() {
       console.warn('⚠️ Элементы счётчиков не найдены');
     }
   }
-  
+
   // Добавить обработчики на все интерактивные элементы
   addEventHandlers() {
     this.addDeleteHandlers();
-    this.addToggleHandlers();// ← добавляем обработчики чекбоксов
+    this.addToggleHandlers(); // ← добавляем обработчики чекбоксов
     // this.addFilterHandlers(); // ← добавляем обработчики фильтров
     this.addCopyHandlers();
     this.addDragDropHandlers();
@@ -466,7 +321,7 @@ addDragDropHandlers() {
   addToggleHandlers() {
     // Находим все чекбоксы
     const checkboxes = document.querySelectorAll('.todo-item__checkbox-input');
-    checkboxes.forEach(checkbox => {
+    checkboxes.forEach((checkbox) => {
       checkbox.addEventListener('change', (event) => {
         // Предотвращаем всплытие
         event.stopPropagation();
@@ -490,15 +345,15 @@ addDragDropHandlers() {
   // Обновить активную кнопку фильтра
   updateActiveFilter(activeFilter) {
     console.log('🎯 Обновляю активный фильтр:', activeFilter);
-    
+
     // Находим все кнопки фильтров
     const filterButtons = document.querySelectorAll('.todo-filter');
-    
+
     // Убираем класс active у всех кнопок
-    filterButtons.forEach(button => {
+    filterButtons.forEach((button) => {
       button.classList.remove('todo-filter--active');
     });
-    
+
     // Находим нужную кнопку и добавляем класс active
     const activeButton = document.querySelector(`[data-filter="${activeFilter}"]`);
     if (activeButton) {
@@ -511,20 +366,13 @@ addDragDropHandlers() {
   // Добавить обработчики на кнопки фильтров
   addFilterHandlers() {
     const filterButtons = document.querySelectorAll('.todo-filter');
-    
-    filterButtons.forEach(button => {
+
+    filterButtons.forEach((button) => {
       button.addEventListener('click', (event) => {
         event.preventDefault();
-        
+
         const filter = button.dataset.filter; // получаем значение из data-filter
         console.log('🔘 Нажата кнопка фильтра:', filter);
-        
-        // Если есть колбэк для фильтрации - вызываем его
-        // if (this.onFilterCallback) {
-        //   this.onFilterCallback(filter);
-        // } else {
-        //   console.warn('⚠️ Нет колбэка для фильтрации');
-        // }
         // Обработчики фильтров теперь в контроллере
         console.log('🎯 Фильтр выбран в представлении:', filter);
         // Обработчик будет вызван напрямую из setupFilterHandlersOnce()
@@ -532,10 +380,10 @@ addDragDropHandlers() {
       });
     });
   }
- //Добавить обработчик кликов на кнопки копирования
+  //Добавить обработчик кликов на кнопки копирования
   addCopyHandlers() {
     const copyButtons = document.querySelectorAll('.todo-item__copy');
-    copyButtons.forEach(button => {
+    copyButtons.forEach((button) => {
       button.addEventListener('click', (event) => {
         event.stopPropagation();
         const todoTtem = button.closest('.todo-item');
@@ -588,10 +436,10 @@ addDragDropHandlers() {
     if (clearButton) {
       clearButton.disabled = counters.completed === 0;
       if (counters.completed === 0) {
-        clearButton.classList.add('todo-clear--disabled'); // ← ЭТА СТРОКА ПРАВИЛЬНАЯ
+        clearButton.classList.add('todo-clear--disabled');
         clearButton.textContent = '🧹 Очистить выполненные';
       } else {
-        clearButton.classList.remove('todo-clear--disabled'); // ← И ЭТА ТОЖЕ
+        clearButton.classList.remove('todo-clear--disabled');
         clearButton.textContent = `🧹 Очистить выполненные (${counters.completed})`;
       }
     }

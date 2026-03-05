@@ -10,7 +10,7 @@
   padding: variables.$spacing-sm;
   min-height: 200px;
   transition: background 0.3s ease;
-  
+
   &.drag-over {
     border: 2px dashed var(--accent-color);
     background: var(--bg-secondary);

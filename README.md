@@ -1,13 +1,44 @@
-# To-Do-List 🚀
+# To-Do-List
+
+Демо:
+https://komlevaalena.github.io/To-Do-Vite/
 
 ## 🛠️ Технологии
 
-- Vite 4.5.3
+- Vite 4.5.3 Сборка проекта и dev-сервер
 - SCSS
-- React 18
+- Vanilla JavaScript
 - GitHub Pages
 
+## Возможности
+
+- Создание, редактирование и удаление задач
+- Отметка выполненных задач
+- Фильтрация (все / активные / выполненные)
+- Drag-and-drop для изменения порядка задач
+- Копирование задач
+- Очистка выполненных задач
+- Переключение светлой и тёмной темы
+- Клавиатурные сокращения
+- Сохранение данных в localStorage
+- Полностью адаптивный интерфейс
+
+## Цели проекта
+
+Проект создавался для отработки навыков:
+
+- Модульная архитектура (MVC)
+- Работа с DOM без фреймворков
+- Управление состоянием приложения
+- Drag-and-drop API
+- Кастомные темы через CSS-переменные
+- Клавиатурные сокращения
+- Работа с localStorage
+
 ```bash
+# Клонировать репозиторий
+git clone https://github.com/komlevaalena/To-Do-Vite.git
+
 # Установка зависимостей
 npm install
 
@@ -17,36 +48,20 @@ npm run dev
 # Сборка для продакшена
 npm run build
 
-# Деплой на GitHub Pages
-npm run deploy
-
-https://komlevaalena.github.io/To-Do-Vite/
-
-# Убедимся что у нас есть тестовое изображение в src/assets/images/
-ls -la src/assets/images/
-
-# Запускаем конвертацию
-npm run convert-images
-
-# Должен быть вывод:
-# 🚀 Starting image conversion...
-# 📁 Found 1 images in src/assets/images/
-# 🔄 Processing: photo.jpg
-# ✅ Converted: photo.jpg → photo.webp + photo.jpg (optimized)
-
-# Проверяем что файлы создались в public
-ls -la public/assets/images/
-# Должны быть: photo.jpg и photo.webp
-# Собираем проект
-npm run build
-
 # Запускаем превью
 npm run preview
 
-Клавиша	Действие
+# Деплой на GitHub Pages
+npm run deploy
+
+# Конвертация изображений
+npm run convert-images
+
+# Клавиша	Действие
 1	Фильтр "Все"
 2	Фильтр "Активные"
 3	Фильтр "Выполненные"
 Esc	Отмена редактирования
 Ctrl + Z	Отмена последнего действия
 ?	Показать справку
+```

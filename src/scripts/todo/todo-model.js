@@ -1,33 +1,36 @@
 // Модель данных для Todo листа
 class TodoModel {
-  constructor() {// Конструктор класса - выполняется при создании нового объекта
+  constructor() {
+    // Конструктор класса - выполняется при создании нового объекта
     this.todos = []; // Массив задач Создаем пустой массив для хранения задач
     this.nextId = 1; // Счётчик для ID Уникальный идентификатор для каждой новой задачи Каждая задача получит id: 1, 2, 3, ...
     this.currentFilter = 'all'; // 'all', 'active', 'completed' ← добавляем состояние фильтра
   }
 
   // Добавить задачу
-  addTodo(text) { // Проверяем, что текст не пустой
+  addTodo(text) {
+    // Проверяем, что текст не пустой
     if (!text || text.trim() === '') {
       return null; // Пустые задачи не добавляем
-      
     }
 
-    const todo = { // Создаем объект задачи
-      id: this.nextId++,// Присваиваем id и увеличиваем счетчик
+    const todo = {
+      // Создаем объект задачи
+      id: this.nextId++, // Присваиваем id и увеличиваем счетчик
       text: text.trim(), // Убираем лишние пробелы
-      completed: false // По умолчанию задача не выполнена
+      completed: false, // По умолчанию задача не выполнена
     };
 
-    this.todos.push(todo);// Добавляем задачу в массив
+    this.todos.push(todo); // Добавляем задачу в массив
     this.saveToLocalStorage(); // ← ДОБАВЛЯЕМ СОХРАНЕНИЕ
-    return todo;// Возвращаем созданную задачу
+    return todo; // Возвращаем созданную задачу
   }
 
   // Удалить задачу по ID Метод для удаления задачи по ID
   removeTodo(id) {
-    const index = this.todos.findIndex(todo => todo.id === id); // Находим индекс задачи в массиве findIndex проходит по всем задачам и ищет ту, у которой id совпада
-    if (index !== -1) { // Если задача найдена (индекс не -1)
+    const index = this.todos.findIndex((todo) => todo.id === id); // Находим индекс задачи в массиве findIndex проходит по всем задачам и ищет ту, у которой id совпада
+    if (index !== -1) {
+      // Если задача найдена (индекс не -1)
       this.todos.splice(index, 1); // Удаляем задачу из массива splice удаляет элемент по индексу
       this.saveToLocalStorage(); // ← ДОБАВЛЯЕМ СОХРАНЕНИЕ
       return true; // Успешно удалил
@@ -45,26 +48,27 @@ class TodoModel {
     return this.todos.length > 0; // Возвращает true если массив не пустой, false если пустой
   }
 
-  getTotalCount() { // Получить количество всех задач
+  getTotalCount() {
+    // Получить количество всех задач
     return this.todos.length;
   }
   // Получить количество выполненных задач
   getCompletedCount() {
     // filter создает новый массив с задачами, где completed === true
     // length возвращает количество элементов
-    return this.todos.filter(todo => todo.completed).length;
+    return this.todos.filter((todo) => todo.completed).length;
   }
   // Получить количество активных (не выполненных) задач
   getActiveCount() {
     // filter создает новый массив с задачами, где completed === false
-    return this.todos.filter(todo => !todo.completed).length;
+    return this.todos.filter((todo) => !todo.completed).length;
   }
   // Метод для получения всех данных счётчиков сразу
   getCounters() {
     return {
       total: this.getTotalCount(),
       completed: this.getCompletedCount(),
-      active: this.getActiveCount()
+      active: this.getActiveCount(),
     };
   }
   // Получить отфильтрованные задачи
@@ -75,20 +79,28 @@ class TodoModel {
     console.log('=== getFilteredTodos DEBUG ===');
     console.log('1. currentFilter:', this.currentFilter);
     console.log('2. все задачи:', this.todos);
-    console.log('3. выполненные задачи:', this.todos.filter(t => t.completed));
-    console.log('4. активные задачи:', this.todos.filter(t => !t.completed));
+    console.log(
+      '3. выполненные задачи:',
+      this.todos.filter((t) => t.completed)
+    );
+    console.log(
+      '4. активные задачи:',
+      this.todos.filter((t) => !t.completed)
+    );
     let result;
 
     switch (this.currentFilter) {
       case 'active':
-      console.log('🔵 Фильтр ACTIVE');
-      result = this.todos.filter(todo => !todo.completed);
-      break;
+        console.log('🔵 Фильтр ACTIVE');
+        result = this.todos.filter((todo) => !todo.completed);
+        break;
       case 'completed':
         console.log('🟢 Фильтр COMPLETED');
-        console.log('🟢 Выполненные задачи (должны быть в результате):', 
-                    this.todos.filter(todo => todo.completed));
-        result = this.todos.filter(todo => todo.completed);
+        console.log(
+          '🟢 Выполненные задачи (должны быть в результате):',
+          this.todos.filter((todo) => todo.completed)
+        );
+        result = this.todos.filter((todo) => todo.completed);
         break;
       case 'all':
       default:
@@ -106,15 +118,15 @@ class TodoModel {
   toggleTodo(id) {
     console.log('🔄 Переключаю статус задачи с id:', id);
     // Находим задачу по id
-    const todo = this.todos.find(todo => todo.id === id);
+    const todo = this.todos.find((todo) => todo.id === id);
 
     if (todo) {
       // Меняем статус на противоположный
-    // Если было true → станет false, если было false → станет true
-    todo.completed = !todo.completed;
-    this.saveToLocalStorage(); // ← ДОБАВЛЯЕМ СОХРАНЕНИЕ
-    console.log('✅ Статус изменён:', todo.completed);
-    return true;
+      // Если было true → станет false, если было false → станет true
+      todo.completed = !todo.completed;
+      this.saveToLocalStorage(); // ← ДОБАВЛЯЕМ СОХРАНЕНИЕ
+      console.log('✅ Статус изменён:', todo.completed);
+      return true;
     }
     console.log('❌ Задача не найдена');
     return false;
@@ -138,18 +150,18 @@ class TodoModel {
       const todosData = localStorage.getItem('todoApp_todos');
       if (todosData) {
         this.todos = JSON.parse(todosData);
-        
+
         if (this.todos.length > 0) {
-          this.nextId = Math.max(...this.todos.map(todo => todo.id)) + 1;
+          this.nextId = Math.max(...this.todos.map((todo) => todo.id)) + 1;
         }
       }
-      
+
       // Загружаем фильтр (если есть)
       const filterData = localStorage.getItem('todoApp_filter');
       if (filterData && ['all', 'active', 'completed'].includes(filterData)) {
         this.currentFilter = filterData;
       }
-      
+
       console.log('📂 Загружены задачи и фильтр:', this.currentFilter);
       return true;
     } catch (error) {
@@ -157,19 +169,6 @@ class TodoModel {
     }
     return false;
   }
-
-  // Получить отфильтрованные задачи
-  // getFilteredTodos() {
-  //   switch (this.currentFilter) {
-  //     case 'active':
-  //       return this.todos.filter(todo => !todo.completed);
-  //     case 'complited':
-  //       return this.todos.filter(todo => todo.completed);
-  //     case 'all':
-  //       default:
-  //       return [...this.todos];// возвращаем копию
-  //   }
-  // }
 
   setFilter(filter) {
     console.log('🔥 setFilter вызван с:', filter);
@@ -184,7 +183,10 @@ class TodoModel {
 
       console.log('🔥 Новый текущий фильтр:', this.currentFilter);
       console.log('🔥 Все задачи:', this.todos);
-      console.log('🔥 Выполненные задачи:', this.todos.filter(t => t.completed));
+      console.log(
+        '🔥 Выполненные задачи:',
+        this.todos.filter((t) => t.completed)
+      );
 
       return true;
     }
@@ -193,7 +195,7 @@ class TodoModel {
     return false;
   }
 
-    // Получить текущий фильтр
+  // Получить текущий фильтр
   getCurrentFilter() {
     return this.currentFilter;
   }
@@ -203,7 +205,7 @@ class TodoModel {
     // Сохраняем старый размер для отладки
     const oldLength = this.todos.length;
     // Фильтруем: оставляем только НЕ выполненные задачи
-    const activeTodos = this.todos.filter(todo => !todo.completed);
+    const activeTodos = this.todos.filter((todo) => !todo.completed);
     // Заменяем массив
     this.todos = activeTodos;
     // Считаем сколько удалили
@@ -212,14 +214,14 @@ class TodoModel {
     this.saveToLocalStorage();
     console.log(`✅ Удалено ${removedCount} выполненных задач`);
     console.log(`📋 Осталось ${this.todos.length} активных задач`);
-    
+
     return removedCount; // Возвращаем сколько удалили
   }
   // Копировать задачу по ID
   copyTodo(id) {
     console.log('📋 Копирую задачу с id:', id);
     // Находим задачу
-    const originalTodo = this.todos.find(todo => todo.id === id);
+    const originalTodo = this.todos.find((todo) => todo.id === id);
     if (!originalTodo) {
       console.log('❌ Задача не найдена');
       return null;
@@ -228,7 +230,7 @@ class TodoModel {
     const copiedTodo = {
       id: this.nextId++,
       text: originalTodo.text + ' (копия)',
-      completed: false // Копия всегда не выполнена
+      completed: false, // Копия всегда не выполнена
     };
     // Добавляем в массив
     this.todos.push(copiedTodo);
@@ -246,7 +248,7 @@ class TodoModel {
       return false;
     }
     // Находим задачу
-    const todo = this.todos.find(todo => todo.id === id);
+    const todo = this.todos.find((todo) => todo.id === id);
     if (!todo) {
       console.log('❌ Задача не найдена');
       return false;
@@ -259,70 +261,39 @@ class TodoModel {
     console.log('✅ Текст изменён с "' + oldText + '" на "' + todo.text + '"');
     return true;
   }
-
-//   moveTodo(draggedId, targetId) {
-//     console.log('📦 Перемещаю задачу', draggedId, 'на место', targetId);
-    
-//     // Находим индексы задач
-//     const draggedIndex = this.todos.findIndex(t => t.id === draggedId);
-//     const targetIndex = this.todos.findIndex(t => t.id === targetId);
-    
-//     // Если не нашли какую-то задачу — ошибка
-//     if (draggedIndex === -1 || targetIndex === -1) {
-//         console.log('❌ Задачи не найдены');
-//         return false;
-//     }
-    
-//     // Вырезаем перетаскиваемую задачу из массива
-//     const [draggedTodo] = this.todos.splice(draggedIndex, 1);
-    
-//     // Определяем новый индекс для вставки
-//     // Если draggedIndex был меньше targetIndex, то после удаления targetIndex уменьшается на 1
-//     const newTargetIndex = draggedIndex < targetIndex ? targetIndex - 1 : targetIndex;
-    
-//     // Вставляем задачу на новое место
-//     this.todos.splice(newTargetIndex, 0, draggedTodo); // ← БЫЛО slice, СТАЛО splice!
-    
-//     // Сохраняем в localStorage
-//     this.saveToLocalStorage();
-    
-//     console.log('✅ Порядок задач изменён. Теперь задачи:', this.todos.map(t => t.id));
-//     return true;
-// }
   moveTodo(draggedId, targetId) {
-      console.log('📦 Перемещаю задачу', draggedId, 'на место', targetId);
-      
-      // Находим индексы
-      const draggedIndex = this.todos.findIndex(t => t.id === draggedId);
-      const targetIndex = this.todos.findIndex(t => t.id === targetId);
-      
-      if (draggedIndex === -1 || targetIndex === -1) {
-          console.log('❌ Задачи не найдены');
-          return false;
-      }
-      
-      // Удаляем перетаскиваемую задачу
-      const [draggedTodo] = this.todos.splice(draggedIndex, 1);
-      
-      // Определяем новый индекс с учётом удаления
-      let newIndex = targetIndex;
-      if (draggedIndex < targetIndex) {
-          newIndex = targetIndex - 1; // Если тащили сверху вниз
-      }
-      
-      // Вставляем на новое место
-      this.todos.splice(newIndex, 0, draggedTodo);
-      
-      this.saveToLocalStorage();
-      console.log('✅ Новый порядок:', this.todos.map(t => t.id));
-      return true;
+    console.log('📦 Перемещаю задачу', draggedId, 'на место', targetId);
+
+    // Находим индексы
+    const draggedIndex = this.todos.findIndex((t) => t.id === draggedId);
+    const targetIndex = this.todos.findIndex((t) => t.id === targetId);
+
+    if (draggedIndex === -1 || targetIndex === -1) {
+      console.log('❌ Задачи не найдены');
+      return false;
+    }
+
+    // Удаляем перетаскиваемую задачу
+    const [draggedTodo] = this.todos.splice(draggedIndex, 1);
+
+    // Определяем новый индекс с учётом удаления
+    let newIndex = targetIndex;
+    if (draggedIndex < targetIndex) {
+      newIndex = targetIndex - 1; // Если тащили сверху вниз
+    }
+
+    // Вставляем на новое место
+    this.todos.splice(newIndex, 0, draggedTodo);
+
+    this.saveToLocalStorage();
+    console.log(
+      '✅ Новый порядок:',
+      this.todos.map((t) => t.id)
+    );
+    return true;
   }
 }
 
-// if (typeof window !== 'undefined') {
-//   window.todoModel = todoModel;
-//   console.log('🔧 todoModel добавлена в window для отладки');
-// }
 // Экспортируем экземпляр модели (синглтон) Создаем один экземпляр (объект) модели "синглтон" - только один экземпляр на всё приложение
 export const todoModel = new TodoModel();
 // Временная отладка - ПОСЛЕ export!

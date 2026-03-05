@@ -9,11 +9,14 @@
     "preview": "vite preview",
     "deploy": "vite build && gh-pages -d docs",
     "convert-images": "node scripts/convert-images.js",
-    "build-sprite": "node scripts/build-sprite.js"
+    "build-sprite": "node scripts/build-sprite.js",
+    "format": "prettier --write \"src/**/*.{js,scss}\"",
+    "format:check": "prettier --check \"src/**/*.{js,scss}\""
   },
   "homepage": "https://komlevaalena.github.io/To-Do-Vite/",
   "devDependencies": {
     "gh-pages": "^6.0.0",
+    "prettier": "2.8.8",
     "sass": "^1.69.0",
     "sharp": "^0.34.4",
     "vite": "^4.5.3"
